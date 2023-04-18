@@ -3,10 +3,27 @@ import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import { Customer } from '@/components/Customer'
+import { GetStaticProps } from 'next/types'
+import prisma from "../../lib/prisma";
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+export const getStaticProps: GetStaticProps = async () => {
+  const feed = await prisma.post.findMany({
+    where: { published: true },
+    include: {
+      author: {
+        select: { name: true },
+      },
+    },
+  });
+  return {
+    props: { feed },
+    revalidate: 10,
+  };
+};
+
+export default function Home(props : any) { //props here is bypass 
   return (
     <>
       <Head>
@@ -15,6 +32,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      {props?.feed && console.log(props.feed)}
       <main className={styles.main}>
         <div className={styles.description}>
           <p>

@@ -38,3 +38,17 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 # nexus-one
 # nexus-one
+
+## Prism Usuage
+
+Once changes are made to Schema 
+
+```bash
+npx prisma db push
+```
+
+and Because Prisma Client is tailored to your own schema, you need to update it every time your Prisma schema file is changing by running the following command:
+
+```bash
+npx prisma generate
+```
