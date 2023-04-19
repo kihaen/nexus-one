@@ -1,27 +1,28 @@
 import React from "react"
-import { GetServerSideProps } from "next"
+import { GetServerSidePropsContext } from "next"
 import ReactMarkdown from "react-markdown"
 import Layout from "../../components/Layout"
 import { PostProps } from "../../components/Post"
+import prisma from "../../../lib/prisma"
 
 // The route is dynamic here so use GetServerSideProps as this is done on runtime
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const post = {
-    id: "1",
-    title: "Prisma is the perfect ORM for Next.js",
-    content: "[Prisma](https://github.com/prisma/prisma) and Next.js go _great_ together!",
-    published: false,
-    author: {
-      name: "Nikolas Burk",
-      email: "burk@prisma.io",
-    },
-  }
-  return {
-    props: post,
-  }
+
+export const getServerSideProps = async ({ params }: GetServerSidePropsContext) => {
+    const post = await prisma?.post.findUnique({
+        where : {
+            id : String(params?.id)
+        },
+        include: {
+            author: {
+                select: { name: true },
+              },
+        }
+    });
+    console.log(post)
+    return { props : post }
 }
 
-const Post = (props : PostProps) => {
+const Post = (props : any) => {
   let title = props.title
   if (!props.published) {
     title = `${title} (Draft)`

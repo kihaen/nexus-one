@@ -20,7 +20,7 @@ export const Table = ({header, rows} : Props) : JSX.Element => {
     }
 
     useEffect(()=>{
-        console.log(State)
+        // console.log(State)
     }, [State])
 
     return(
