@@ -2,13 +2,13 @@ import Layout from '@/components/Layout'
 import Post from '@/components/Post'
 import { Inter } from 'next/font/google'
 import { Customer } from '@/components/Customer'
-import { GetStaticProps } from 'next/types'
+import { GetServerSideProps } from 'next/types'
 import prisma from "../../lib/prisma";
 import { PostProps } from '@/components/Post'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const feed = await prisma.post.findMany({
     where: { published: true },
     include: {
@@ -19,7 +19,6 @@ export const getStaticProps: GetStaticProps = async () => {
   });
   return {
     props: { feed },
-    revalidate: 10,
   };
 };
 
