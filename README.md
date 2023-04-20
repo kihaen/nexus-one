@@ -1,6 +1,6 @@
 ## Getting Started
 
-[NEXUS-ONE](https://https://nexus-one-flax.vercel.app/)
+[NEXUS-ONE](https://nexus-one-flax.vercel.app/)
 
 First, run the development server:
 
