@@ -2,6 +2,9 @@
 
 [NEXUS-ONE](https://nexus-one-flax.vercel.app/)
 
+![Screenshot 2023-04-20 at 1 12 43 PM](https://user-images.githubusercontent.com/25540075/233439645-3b88bf11-7727-4fed-a88d-3b2ebc47cc07.png)
+
+
 First, run the development server:
 
 ```bash
