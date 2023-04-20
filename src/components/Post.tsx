@@ -20,14 +20,24 @@ type Post = {
 const Post = ({ post } : Post): JSX.Element => {
   const authorName = post.author ? post.author.name : "Unknown author";
   return (
-    <div onClick={() => Router.push("/p/[id]", `/p/${post.id}`)}>
+    <div className="post-wrapper" onClick={() => Router.push("/p/[id]", `/p/${post.id}`)}>
       <h2>{post.title}</h2>
       <small>By {authorName}</small>
+      <div className="post-content">
       <ReactMarkdown>
         {post.content}
       </ReactMarkdown>
+      </div>
       <style jsx>{`
-        div {
+        h2{
+          margin-bottom : 10px;
+        }
+        .post-content{
+          margin-top: 20px;
+        }
+        .post-wrapper{
+          border : 1px black solid;
+          background-color : white;
           color: inherit;
           padding: 2rem;
         }

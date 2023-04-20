@@ -122,7 +122,7 @@ const Header = () : JSX.Element => {
           </a>
         </Link>
         <Link href="/drafts">
-          <a data-active={isActive('/drafts')}>My drafts</a>
+          <a data-active={isActive('/drafts')}>My Drafts</a>
         </Link>
         <style jsx>{`
           .bold {

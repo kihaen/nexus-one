@@ -70,6 +70,9 @@ const Drafts = (props : Props): JSX.Element => {
         .post + .post {
           margin-top: 2rem;
         }
+        h1{
+          margin-bottom: 20px;
+        }
       `}</style>
     </Layout>
   );
