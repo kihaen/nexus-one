@@ -13,12 +13,12 @@ pnpm dev
 
 This application uses the following : 
 
-Next.js
+**Next.js,
 Prisma,
-PostgreSQL via Supabase
-NextAuth
-TypeScript
-Vercel for deployment
+PostgreSQL via Supabase,
+NextAuth,
+TypeScript,
+Vercel for deployment**
 
 ## Project Goal
 
