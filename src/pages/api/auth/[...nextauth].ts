@@ -15,7 +15,7 @@ declare var process : {
     }
   }
 
-const options = {
+export const options = {
   providers: [
     GitHubProvider({
       clientId: process.env.GITHUB_ID,
