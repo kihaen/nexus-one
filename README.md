@@ -9,6 +9,16 @@ yarn dev
 # or
 pnpm dev
 ```
+## Tech Stack
+
+This application uses the following : 
+
+Next.js
+Prisma,
+PostgreSQL via Supabase
+NextAuth
+TypeScript
+Vercel for deployment
 
 ## Project Goal
 
