@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { signOut, useSession } from 'next-auth/react';
+import Style from '../styles/Header.module.scss'
 
 const Header = () : JSX.Element => {
   const router = useRouter();
@@ -11,31 +12,12 @@ const Header = () : JSX.Element => {
   const { data: session, status } = useSession();
 
   let left = (
-    <div className="left">
+    <div className={Style.left}>
       <Link href="/">
         <a className="bold" data-active={isActive('/')}>
           Feed
         </a>
       </Link>
-      <style jsx>{`
-        .bold {
-          font-weight: bold;
-        }
-
-        a {
-          text-decoration: none;
-          color: var(--geist-foreground);
-          display: inline-block;
-        }
-
-        .left a[data-active='true'] {
-          color: gray;
-        }
-
-        a + a {
-          margin-left: 1rem;
-        }
-      `}</style>
     </div>
   );
 
@@ -43,35 +25,16 @@ const Header = () : JSX.Element => {
 
   if (status === 'loading') {
     left = (
-      <div className="left">
+      <div className={Style.left}>
         <Link href="/">
           <a className="bold" data-active={isActive('/')}>
             Feed
           </a>
         </Link>
-        <style jsx>{`
-          .bold {
-            font-weight: bold;
-          }
-
-          a {
-            text-decoration: none;
-            color: var(--geist-foreground);
-            display: inline-block;
-          }
-
-          .left a[data-active='true'] {
-            color: gray;
-          }
-
-          a + a {
-            margin-left: 1rem;
-          }
-        `}</style>
       </div>
     );
     right = (
-      <div className="right">
+      <div className={Style.right}>
         <p>Validating session ...</p>
         <style jsx>{`
           .right {
@@ -84,38 +47,17 @@ const Header = () : JSX.Element => {
 
   if (!session) {
     right = (
-      <div className="right">
+      <div className={Style.right}>
         <Link href="/api/auth/signin">
           <a data-active={isActive('/signup')}>Log in</a>
         </Link>
-        <style jsx>{`
-          a {
-            text-decoration: none;
-            color: var(--geist-foreground);
-            display: inline-block;
-          }
-
-          a + a {
-            margin-left: 1rem;
-          }
-
-          .right {
-            margin-left: auto;
-          }
-
-          .right a {
-            border: 1px solid var(--geist-foreground);
-            padding: 0.5rem 1rem;
-            border-radius: 3px;
-          }
-        `}</style>
       </div>
     );
   }
 
   if (session) {
     left = (
-      <div className="left">
+      <div className={Style.left}>
         <Link href="/">
           <a className="bold" data-active={isActive('/')}>
             Feed
@@ -124,29 +66,10 @@ const Header = () : JSX.Element => {
         <Link href="/drafts">
           <a data-active={isActive('/drafts')}>My Drafts</a>
         </Link>
-        <style jsx>{`
-          .bold {
-            font-weight: bold;
-          }
-
-          a {
-            text-decoration: none;
-            color: var(--geist-foreground);
-            display: inline-block;
-          }
-
-          .left a[data-active='true'] {
-            color: gray;
-          }
-
-          a + a {
-            margin-left: 1rem;
-          }
-        `}</style>
       </div>
     );
     right = (
-      <div className="right">
+      <div className={Style.right}>
         <p>
           {session?.user?.name} ({session?.user?.email})
         </p>
@@ -158,38 +81,6 @@ const Header = () : JSX.Element => {
         <button onClick={() => signOut()}>
           <a>Log out</a>
         </button>
-        <style jsx>{`
-          a {
-            text-decoration: none;
-            color: var(--geist-foreground);
-            display: inline-block;
-          }
-
-          p {
-            display: inline-block;
-            font-size: 13px;
-            padding-right: 1rem;
-          }
-
-          a + a {
-            margin-left: 1rem;
-          }
-
-          .right {
-            margin-left: auto;
-          }
-
-          .right a {
-            border: 1px solid black;
-            padding: 0.5rem 1rem;
-            border-radius: 3px;
-            margin-right : 10px
-          }
-
-          button {
-            border: none;
-          }
-        `}</style>
       </div>
     );
   }

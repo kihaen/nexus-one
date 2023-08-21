@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import Layout from '@/components/Layout';
 import Router from 'next/router';
+import Style from "../styles/Create.module.scss"
 
 const Draft = ():JSX.Element => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+
+  const title = useRef<HTMLInputElement>(null!)
+  const content = useRef<HTMLTextAreaElement>(null!)
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      const body = { title, content };
+      const body = { title : title.current.value, content : content.current.value };
       await fetch('/api/post', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -23,57 +25,29 @@ const Draft = ():JSX.Element => {
 
   return (
     <Layout>
-      <div>
+      <div className={Style.page}>
         <form onSubmit={submitData}>
           <h1>New Draft</h1>
           <input
             autoFocus
-            onChange={(e) => setTitle(e.target.value)}
+            ref={title}
+            onChange={(e)=>{title.current.value = e.target.value}}
             placeholder="Title"
             type="text"
-            value={title}
           />
           <textarea
             cols={50}
-            onChange={(e) => setContent(e.target.value)}
+            ref = {content}
+            onChange={(e) => content.current.value = e.target.value}
             placeholder="Content"
             rows={8}
-            value={content}
           />
           <input disabled={!content || !title} type="submit" value="Create" />
-          <a className="back" href="#" onClick={() => Router.push('/')}>
-            or Cancel
+          <a className={Style.back} href="#" onClick={() => Router.push('/')}>
+            Cancel
           </a>
         </form>
       </div>
-      <style jsx>{`
-        .page {
-          background: var(--geist-background);
-          padding: 3rem;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        input[type='text'],
-        textarea {
-          width: 100%;
-          padding: 0.5rem;
-          margin: 0.5rem 0;
-          border-radius: 0.25rem;
-          border: 0.125rem solid rgba(0, 0, 0, 0.2);
-        }
-
-        input[type='submit'] {
-          background: #ececec;
-          border: 0;
-          padding: 1rem 2rem;
-        }
-
-        .back {
-          margin-left: 1rem;
-        }
-      `}</style>
     </Layout>
   )
 };

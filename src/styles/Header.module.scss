@@ -1,0 +1,42 @@
+.bold {
+    font-weight: bold;
+}
+
+.left{
+    a[data-active='true'] {
+        color: gray;
+    }
+    a{
+        padding: 0.5rem 1rem;
+        border-radius: 3px;
+        border: 1px solid var(--geist-foreground);
+    }
+    a {
+        text-decoration: none;
+        color: var(--geist-foreground);
+        display: inline-block;
+    }
+    p {
+        display: inline-block;
+        font-size: 13px;
+        padding-right: 1rem;
+    }
+}
+
+
+.right {
+    margin-left: auto !important;
+    p {
+        display: inline-block;
+        font-size: 13px;
+        padding-right: 1rem;
+    }
+    a {
+        border: 1px solid var(--geist-foreground);
+        padding: 0.5rem 1rem;
+        border-radius: 3px;
+    }
+    button {
+        border: none;
+      }
+}

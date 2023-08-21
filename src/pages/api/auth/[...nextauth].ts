@@ -14,7 +14,7 @@ declare var process : {
         SECRET : string
     }
   }
-
+  
 export const options = {
   providers: [
     GitHubProvider({

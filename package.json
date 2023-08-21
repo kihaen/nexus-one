@@ -7,13 +7,17 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "migrate dev": "npx prisma migrate dev",
+    "migrate.dev": "npx prisma migrate dev",
     "generate": "npx prisma generate",
     "test_server": "nodemon src/script.ts",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@chakra-ui/next-js": "^2.1.4",
+    "@chakra-ui/react": "^2.7.0",
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
     "@next-auth/prisma-adapter": "^1.0.6",
     "@prisma/client": "^4.12.0",
     "@types/node": "18.15.11",
@@ -21,6 +25,7 @@
     "@types/react-dom": "18.0.11",
     "eslint": "8.37.0",
     "eslint-config-next": "13.2.4",
+    "framer-motion": "^10.12.16",
     "next": "13.2.4",
     "next-auth": "^4.22.1",
     "postgres": "^3.3.4",
@@ -40,6 +45,7 @@
     "eslint-plugin-storybook": "^0.6.11",
     "nodemon": "^2.0.22",
     "prisma": "^4.12.0",
+    "sass": "^1.66.1",
     "storybook": "^7.0.5",
     "ts-node": "^10.9.1"
   }

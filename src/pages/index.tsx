@@ -1,5 +1,6 @@
 import Layout from '@/components/Layout'
 import Post from '@/components/Post'
+import { useEffect, useState } from 'react'
 import { Inter } from 'next/font/google'
 import { Customer } from '@/components/Customer'
 import { GetServerSideProps } from 'next/types'
@@ -26,16 +27,39 @@ type Props = {
   feed : PostProps[]
 }
 
+
 const Home = (props : Props): JSX.Element =>{ //props here is bypass 
+  const [searchInput, changeInput] = useState<string>('');
+  const [publicFeed, changeFeed] = useState<PostProps[]>([]); 
+  const { feed } = props;
+
+  useEffect(()=>{
+    changeFeed(feed)
+  },[feed])
+
+  const onChangeSearch = (input : string)=>{
+    changeInput(input);
+    const sorted = feed.filter((iter)=>{
+      return iter.title.includes(input)
+    })
+    changeFeed(sorted)
+  }
+
   return (
     <>
       <main className={''}>
         {/* <Customer data={{todo : 'dsds', 'something' : 4}}/> */}
         <Layout>
+          <input onChange={(e)=>{onChangeSearch(e.target.value)}} value={searchInput}/>
           <div className="page">
             <h1>Public Feed</h1>
             <main>
-              {props.feed.map((post) => (
+              {/* {props.feed.map((post) => (
+                <div key={post.id} className="post">
+                  <Post post={post} />
+                </div>
+              ))} */}
+              {publicFeed.map((post) => (
                 <div key={post.id} className="post">
                   <Post post={post} />
                 </div>

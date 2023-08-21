@@ -5,6 +5,7 @@ import Router from "next/router";
 import { useSession } from 'next-auth/react';
 import Layout from "../../components/Layout"
 import prisma from "../../../lib/prisma";
+import Style from "../../styles/Post.module.scss";
 
 // The route is dynamic here so use GetServerSideProps as this is done on runtime
 
@@ -52,67 +53,21 @@ const Post = (props : any) => {
 
   return (
     <Layout>
-      <div className="Post-Overview-Wrapper">
+      <div className={Style.postOverviewWrapper}>
         <h2>{title}</h2>
-        <p className="Post-Overview-Author">By {props?.author?.name || "Unknown author"}</p>
-        <ReactMarkdown>
+        <p className={Style.postOverviewAuthor}>By {props?.author?.name || "Unknown author"}</p>
+        <ReactMarkdown className={Style.content}>
           {props.content}
         </ReactMarkdown>
-        <div className="post-overview-wrapper">
+        <div>
           {!props.published && userHasValidSession && postBelongsToUser && (
-              <button className="publish-draft" onClick={() => publishPost(props.id)}>Publish</button>
+              <button className={Style.publishDraft} onClick={() => publishPost(props.id)}>Publish</button>
           )}
           {userHasValidSession && postBelongsToUser && (
-            <button className="delete-post" onClick={() => deletePost(props.id)}>Delete</button>
+            <button className={Style.deletePost} onClick={() => deletePost(props.id)}>Delete</button>
           )}
           </div>
         </div>
-      <style jsx>{`
-        h2{
-          padding-bottom : 10px;
-        }
-        .Post-Overview-Author{
-          padding-bottom : 30px;
-          margin-bottom : 10px;
-        }
-        .post-overview-wrapper{
-          margin-top : 20px;
-        }
-        .publish-draft{
-          border : 1px black solid;
-        }
-        .publish-draft:hover{
-          border : 1px black solid;
-          color : white;
-          background-color : black;
-          transition-duration: .3s;
-        }
-        .delete-post{
-          border : 1px black solid;
-        }
-        .delete-post:hover{
-          border : 1px black solid;
-          color : white;
-          background-color : black;
-          transition-duration: .3s;
-        }
-        .page {
-          background: white;
-          padding: 2rem;
-        }
-        .actions {
-          margin-top: 2rem;
-        }
-        button {
-          background: #ececec;
-          border: 0;
-          border-radius: 0.125rem;
-          padding: 1rem 2rem;
-        }
-        button + button {
-          margin-left: 1rem;
-        }
-      `}</style>
     </Layout>
   )
 }
