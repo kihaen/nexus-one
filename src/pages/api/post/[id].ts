@@ -12,6 +12,19 @@ export default async function handle(
       where: { id: postId },
     });
     res.json(post);
+  }
+  // POST update for posts
+  else if (req.method === 'POST'){
+    const {content, title} = req.body
+    const post = await prisma.post.update({
+      where : {id : postId},
+      data : {
+        title : title,
+        content : content
+      }
+    })
+    res.json(post);
+
   } else {
     throw new Error(
       `The HTTP ${req.method} method is not supported at this route.`,

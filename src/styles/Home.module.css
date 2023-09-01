@@ -2,10 +2,16 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
-  padding: 6rem;
   min-height: 100vh;
 }
+
+
+.inputWrapper{
+  margin: 2rem 0 2rem 0;
+}
+
+/* Questionable CSS below here -------------- */
+
 
 .description {
   display: inherit;

@@ -1,11 +1,12 @@
 
-import React from 'react';
+import React,{useState, useEffect} from 'react';
 import { GetServerSideProps } from 'next';
 import { useSession, getSession } from 'next-auth/react';
 import Layout from '../components/Layout';
 import Post, { PostProps } from '../components/Post';
 import prisma from '../../lib/prisma';
 import Style from '../styles/Post.module.scss';
+import { Input } from 'antd';
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
@@ -36,6 +37,23 @@ type Props = {
 
 const Drafts = (props : Props): JSX.Element => {
   const { data: session } = useSession();
+  const {Search} = Input;
+  const feed = props.drafts // double check
+
+  const [searchInput, changeInput] = useState<string>('');
+  const [drafts, changeDrafts] = useState<PostProps[]>([]); 
+
+  useEffect(()=>{
+    changeDrafts(feed)
+  },[feed])
+
+  const onChangeSearch = (input : string)=>{
+    changeInput(input);
+    const sorted = feed.filter((iter)=>{
+      return iter.title.includes(input)
+    })
+    changeDrafts(sorted)
+  }
 
   if (!session) {
     return (
@@ -48,10 +66,11 @@ const Drafts = (props : Props): JSX.Element => {
 
   return (
     <Layout>
+      <Search className={Style.inputWrapper} placeholder='Search' onChange={(e)=>{onChangeSearch(e.target.value)}} value={searchInput}/>
       <div className={Style.page}>
         <h1>My Drafts</h1>
         <main>
-        {props.drafts.map((post) => (
+        {drafts.map((post) => (
         <div key={post.id} className={Style.post}>
           <Post post={post} />
         </div>

@@ -6,8 +6,11 @@ import { Customer } from '@/components/Customer'
 import { GetServerSideProps } from 'next/types'
 import prisma from "../../lib/prisma";
 import { PostProps } from '@/components/Post'
+import { Input } from 'antd'
+import Style from "../styles/Home.module.css";
 
 const inter = Inter({ subsets: ['latin'] })
+const { Search } = Input;
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const feed = await prisma.post.findMany({
@@ -47,10 +50,10 @@ const Home = (props : Props): JSX.Element =>{ //props here is bypass
 
   return (
     <>
-      <main className={''}>
+      <main className={Style.main}>
         {/* <Customer data={{todo : 'dsds', 'something' : 4}}/> */}
         <Layout>
-          <input onChange={(e)=>{onChangeSearch(e.target.value)}} value={searchInput}/>
+          <Search className={Style.inputWrapper} placeholder='Search' onChange={(e)=>{onChangeSearch(e.target.value)}} value={searchInput}/>
           <div className="page">
             <h1>Public Feed</h1>
             <main>

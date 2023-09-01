@@ -94,6 +94,9 @@ const Header = () : JSX.Element => {
           display: flex;
           padding: 2rem;
           align-items: center;
+          border-bottom : 1px black solid;
+          background-color : black;
+          color : white;
         }
       `}</style>
     </nav>
