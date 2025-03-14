@@ -63,9 +63,9 @@ const Header = (): JSX.Element => {
   } else if (!session) {
     right = (
       <div className={Style.right}>
-        <Link href="/api/auth/signin" data-active={isActive('/signup')}>
-          Log in
-        </Link>
+          < Link className={Style.loginLink} href="/api/auth/signin" data-active={isActive('/signup')}>
+            Log in
+          </Link>
       </div>
     );
   } else if (session) {
