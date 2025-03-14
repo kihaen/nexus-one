@@ -2,7 +2,7 @@
 
 [NEXUS-ONE](https://nexus-one-flax.vercel.app/)
 
-![Screenshot 2023-04-20 at 1 12 43 PM](https://user-images.githubusercontent.com/25540075/233439645-3b88bf11-7727-4fed-a88d-3b2ebc47cc07.png)
+![Screenshot 2025-03-14 at 1 03 03 PM](https://github.com/user-attachments/assets/7f00da84-1cd5-4963-a1dd-07dbd880d6ef)
 
 
 First, run the development server:
