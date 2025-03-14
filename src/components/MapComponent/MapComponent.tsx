@@ -29,6 +29,7 @@ interface MapComponentProps  {
 const MapComponent = ({clickMapHandler, height, width, showDot = false, initialMarkers = []} : MapComponentProps)=> {
     const [map, setMap] = useState<Map | null>(null);
     const [vectorLayer, setVectorLayer] = useState<VectorLayer | null>(null);
+    useGeographic();
 
     useEffect(() => {
       console.log("mapComponent initialize was called")
@@ -44,8 +45,6 @@ const MapComponent = ({clickMapHandler, height, width, showDot = false, initialM
               layer : "osm_bright"
             })
         });
-        
-        useGeographic();
 
         const mousePositionControl = new MousePosition({
             coordinateFormat: createStringXY(4),
