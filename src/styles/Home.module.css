@@ -5,9 +5,48 @@
   min-height: 100vh;
 }
 
+.left{
+  margin-top: 30px;
+  width: 50%;
+  display: inline-block;
+}
+.right{
+  margin-top: 30px;
+  width: 50%;
+  display: inline-block;
+  margin-left: 30px;
+}
+
+.homeOrientation{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.page{
+  margin: 30px;
+}
+
+.latestPostList{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  align-items : flex-end;
+  width: 100%;
+}
+
+.publicTitle{
+  margin-bottom: 10px;
+  size: 25px;
+  font-weight: 700;
+}
+
+
 
 .inputWrapper{
-  margin: 2rem 0 2rem 0;
+  margin: 2rem 0 10px 0;
 }
 
 /* Questionable CSS below here -------------- */
@@ -54,7 +93,7 @@
 
 .card {
   padding: 1rem 1.2rem;
-  border-radius: var(--border-radius);
+  border-radius: 1px;
   background: rgba(var(--card-rgb), 0);
   border: 1px solid rgba(var(--card-border-rgb), 0);
   transition: background 200ms, border 200ms;

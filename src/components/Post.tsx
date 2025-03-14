@@ -1,6 +1,9 @@
 import React from "react";
 import Router from "next/router";
-import ReactMarkdown from "react-markdown";
+import Image from "next/image";
+import placeholder from '../assets/placeholderImage.png'
+import { isValidURL } from "@/utility/util";
+import { Card } from "antd";
 
 import Style from "../styles/Post.module.scss"
 
@@ -13,6 +16,9 @@ export type PostProps = {
   } | null;
   content: string;
   published: boolean;
+  coverImg : string;
+  description : string;
+  coordinate : number[]
 };
 
 type Post = {
@@ -22,15 +28,16 @@ type Post = {
 const Post = ({ post } : Post): JSX.Element => {
   const authorName = post.author ? post.author.name : "Unknown author";
   return (
-    <div className={Style.postWrapper} onClick={() => Router.push("/p/[id]", `/p/${post.id}`)}>
+    <Card className={Style.postWrapper} hoverable cover={<Image width={338} height={300} src={isValidURL(post?.coverImg)? post?.coverImg : placeholder} alt=''/>} onClick={() => Router.push("/p/[id]", `/p/${post.id}`)}>
+      <>
       <h2>{post.title}</h2>
       <small>By {authorName}</small>
       <div className={Style.postContent}>
-      <ReactMarkdown>
-        {post.content}
-      </ReactMarkdown>
+      <p>{post.description}</p>
       </div>
-    </div>
+    </>
+    </Card>
+
   );
 };
 

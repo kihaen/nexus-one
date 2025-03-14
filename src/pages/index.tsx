@@ -1,9 +1,10 @@
 import Layout from '@/components/Layout'
 import Post from '@/components/Post'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Inter } from 'next/font/google'
 import { Customer } from '@/components/Customer'
 import { GetServerSideProps } from 'next/types'
+import  MapComponent  from '@/components/MapComponent/MapComponent'
 import prisma from "../../lib/prisma";
 import { PostProps } from '@/components/Post'
 import { Input } from 'antd'
@@ -32,43 +33,53 @@ type Props = {
 
 
 const Home = (props : Props): JSX.Element =>{ //props here is bypass 
-  const [searchInput, changeInput] = useState<string>('');
-  const [publicFeed, changeFeed] = useState<PostProps[]>([]); 
+  const searchText = useRef('')
+  const [latestFeed, setLatestFeed] = useState<PostProps[]>([]); 
   const { feed } = props;
 
   useEffect(()=>{
-    changeFeed(feed)
+    setLatestFeed(feed)
   },[feed])
 
   const onChangeSearch = (input : string)=>{
-    changeInput(input);
+    searchText.current = input;
     const sorted = feed.filter((iter)=>{
       return iter.title.includes(input)
     })
-    changeFeed(sorted)
+    setLatestFeed(sorted)
   }
+  
+  const mapCoordinates = useMemo(()=>{
+    return latestFeed.map((post)=>{
+      return post.coordinate
+    })
+  }, [latestFeed])
+
+  console.log(mapCoordinates)
 
   return (
     <>
       <main className={Style.main}>
-        {/* <Customer data={{todo : 'dsds', 'something' : 4}}/> */}
         <Layout>
-          <Search className={Style.inputWrapper} placeholder='Search' onChange={(e)=>{onChangeSearch(e.target.value)}} value={searchInput}/>
-          <div className="page">
-            <h1>Public Feed</h1>
-            <main>
-              {/* {props.feed.map((post) => (
-                <div key={post.id} className="post">
-                  <Post post={post} />
-                </div>
-              ))} */}
-              {publicFeed.map((post) => (
-                <div key={post.id} className="post">
-                  <Post post={post} />
-                </div>
-              ))}
-            </main>
+          <div className={Style.homeOrientation}>
+          <div className={Style.left}>
+            <Search className={Style.inputWrapper} placeholder='Search' onChange={(e)=>{onChangeSearch(e.target.value)}} value={searchText.current}/>
+            <MapComponent height='80vh' initialMarkers={mapCoordinates}/>
           </div>
+          <div className={Style.right}>
+            <div className={Style.page}>
+              <h1 className={Style.publicTitle}>Latest Posts</h1>
+              <main className={Style.latestPostList}>
+                {latestFeed.length > 0 ? latestFeed.map((post) => (
+                  <div key={post.id} className={Style.post}>
+                    <Post post={post} />
+                  </div>
+                )) : "...no content available"}
+              </main>
+            </div>
+          </div>
+          </div>
+
           <style jsx>{`
             .page>h1{
               margin-bottom: 20px
@@ -76,9 +87,6 @@ const Home = (props : Props): JSX.Element =>{ //props here is bypass
             .post {
               background: white;
               transition: box-shadow 0.1s ease-in;
-            }
-            .post:hover {
-              box-shadow: 1px 1px 3px #aaa;
             }
             .post + .post {
               margin-top: 2rem;

@@ -2,7 +2,9 @@ import React, { useContext } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { signOut, useSession } from 'next-auth/react';
-import Style from '../styles/Header.module.scss'
+import Image from 'next/image';
+import Style from '../styles/Header.module.scss';
+import headerIcon from '../assets/homeIcon.svg'
 
 const Header = () : JSX.Element => {
   const router = useRouter();
@@ -13,11 +15,7 @@ const Header = () : JSX.Element => {
 
   let left = (
     <div className={Style.left}>
-      <Link href="/">
-        <a className="bold" data-active={isActive('/')}>
-          Feed
-        </a>
-      </Link>
+      <Link href="/">Nexus</Link>
     </div>
   );
 
@@ -26,10 +24,8 @@ const Header = () : JSX.Element => {
   if (status === 'loading') {
     left = (
       <div className={Style.left}>
-        <Link href="/">
-          <a className="bold" data-active={isActive('/')}>
-            Feed
-          </a>
+        <Link href="/" data-active={isActive('/')}>
+            <Image className='headerIcon' src= {headerIcon} alt={''} height={30} width={30}/>
         </Link>
       </div>
     );
@@ -48,8 +44,8 @@ const Header = () : JSX.Element => {
   if (!session) {
     right = (
       <div className={Style.right}>
-        <Link href="/api/auth/signin">
-          <a data-active={isActive('/signup')}>Log in</a>
+        <Link href="/api/auth/signin" data-active={isActive('/signup')}>
+          Log in
         </Link>
       </div>
     );
@@ -58,13 +54,17 @@ const Header = () : JSX.Element => {
   if (session) {
     left = (
       <div className={Style.left}>
-        <Link href="/">
-          <a className="bold" data-active={isActive('/')}>
-            Feed
-          </a>
+        <Link href="/" data-active={isActive('/')}>
+            <Image className='headerIcon' src= {headerIcon} alt={''} height={30} width={30}/>
         </Link>
-        <Link href="/drafts">
-          <a data-active={isActive('/drafts')}>My Drafts</a>
+        <Link href="/drafts" data-active={isActive('/drafts')}>
+          My Drafts
+        </Link>
+        <Link href="/published" data-active={isActive('/published')}>
+          My Published
+        </Link>
+        <Link href="/inbox" data-active={isActive('/inbox')}>
+          My Inbox
         </Link>
       </div>
     );
@@ -75,7 +75,7 @@ const Header = () : JSX.Element => {
         </p>
         <Link href="/create">
           <button>
-            <a>New post</a>
+          New post
           </button>
         </Link>
         <button onClick={() => signOut()}>
@@ -92,11 +92,16 @@ const Header = () : JSX.Element => {
       <style jsx>{`
         nav {
           display: flex;
-          padding: 2rem;
+          padding: 1rem;
           align-items: center;
           border-bottom : 1px black solid;
           background-color : black;
           color : white;
+          transition: width 2s;
+          transition-delay: 1s;
+          a:hover{
+            color : #509ef2;
+          }
         }
       `}</style>
     </nav>

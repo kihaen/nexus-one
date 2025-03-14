@@ -10,12 +10,28 @@ datasource db {
   url      = env("POSTGRES_PRISMA_URL")
 }
 model Post {
-  id        String  @id @default(cuid())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User?@relation(fields:[authorId], references:[id])
-  authorId  String?
+  id          String  @id @default(cuid())
+  title       String
+  description String?
+  content     String?
+  published   Boolean @default(false)
+  coordinate  Float[] @default([0,0])
+  author      User?@relation(fields:[authorId], references:[id])
+  authorId    String
+  coverImg    String?
+  location    String
+}
+
+model Message {
+  id                 String  @id @default(cuid())
+  title              String
+  content            String?
+  context            String?
+  date               String?
+  messageAuthor     User @relation("messageAuthor", fields:[authorId], references:[id])
+  authorId           String
+  messageReceipient User @relation("messageReceipient", fields:[receipientId], references:[id])
+  receipientId       String
 }
 
 model Account {
@@ -48,14 +64,16 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?@unique
-  emailVerified DateTime?
-  image         String?
-  posts         Post[]
-  accounts      Account[]
-  sessions      Session[]
+  id                 String    @id @default(cuid())
+  name               String?
+  email              String?@unique
+  emailVerified      DateTime?
+  image              String?
+  posts              Post[]
+  accounts           Account[]
+  sessions           Session[]
+  messageAuthor     Message[] @relation("messageAuthor")
+  messageReceipient Message[] @relation("messageReceipient")
 }
 
 model VerificationToken {

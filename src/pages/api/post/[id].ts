@@ -15,12 +15,10 @@ export default async function handle(
   }
   // POST update for posts
   else if (req.method === 'POST'){
-    const {content, title} = req.body
     const post = await prisma.post.update({
       where : {id : postId},
       data : {
-        title : title,
-        content : content
+        ...req.body
       }
     })
     res.json(post);

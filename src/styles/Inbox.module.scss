@@ -1,0 +1,77 @@
+.inputWrapper{
+    margin: 2rem 0 2rem 0;
+    max-width: 500px;
+}
+
+.inboxWrapper{
+    max-width: 1500px;
+    min-width: 500px;
+    min-height: 100px;
+    padding: 40px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, .12);
+}
+
+.messageWrapper{
+    border: 1px solid rgba(0, 0, 0, .12);
+    padding : 20px;
+    margin: 10px 0 10px 0;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, .12);
+    min-height: 100px;
+    h2{
+        display: inline-block;
+        font-size: 20px;
+        text-transform: capitalize;
+        margin-bottom: 10px;
+    }
+    small{
+        margin-bottom: 10px;
+    }
+}
+
+.postReplyContent{
+    padding: 10px;
+    border: solid 1px black;
+    width: 100%;
+}
+
+.messageDetails{
+    margin-bottom: 10px;
+}
+
+.messageContext{
+    color: blue;
+    text-decoration: underline;
+}
+
+.messageHeader{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    min-width: 400px;
+    text-overflow: ellipsis;
+}
+
+.messageActionWrapper{
+    display: flex;
+    gap: 10px;
+}
+
+.messageButton{
+    border: 1px solid black;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.button{
+    border: 1px solid black;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, .12);
+}
+
+.line{
+    width: 100%;
+    border-top: 1px solid black;
+    margin : 10px 0 10px 0;
+}

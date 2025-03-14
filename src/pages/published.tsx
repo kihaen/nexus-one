@@ -13,13 +13,13 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
   if (!session) {
     res.statusCode = 403;
-    return { props: { drafts: [] } };
+    return { props: { published: [] } };
   }
 
-  const drafts = await prisma.post.findMany({
+  const published = await prisma.post.findMany({
     where: {
       author: { email: session?.user?.email },
-      published: false,
+      published: true,
     },
     include: {
       author: {
@@ -28,24 +28,26 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     },
   });
   return {
-    props: { drafts },
+    props: { published },
   };
 };
 
 type Props = {
-  drafts: PostProps[];
+  published: PostProps[];
 };
 
-const Drafts = (props : Props): JSX.Element => {
+// Potentially refactor published and drafts to be the same component
+
+const Published = (props : Props): JSX.Element => {
   const { data: session } = useSession();
   const {Search} = Input;
-  const feed = props.drafts // double check
+  const feed = props.published // double check
 
   const [searchInput, changeInput] = useState<string>('');
-  const [drafts, changeDrafts] = useState<PostProps[]>([]); 
+  const [published, changePublished] = useState<PostProps[]>([]); 
 
   useEffect(()=>{
-    changeDrafts(feed)
+    changePublished(feed)
   },[feed])
 
   const onChangeSearch = (input : string)=>{
@@ -53,13 +55,13 @@ const Drafts = (props : Props): JSX.Element => {
     const sorted = feed.filter((iter)=>{
       return iter.title.includes(input)
     })
-    changeDrafts(sorted)
+    changePublished(sorted)
   }
 
   if (!session) {
     return (
       <Layout>
-        <h1>My Drafts</h1>
+        <h1>My Published</h1>
         <div>You need to be authenticated to view this page.</div>
       </Layout>
     );
@@ -68,18 +70,18 @@ const Drafts = (props : Props): JSX.Element => {
   return (
     <Layout>
       <Search className={Style.inputWrapper} placeholder='Search' onChange={(e)=>{onChangeSearch(e.target.value)}} value={searchInput}/>
-      <div className={Style.drafts}>
-        <h1>My Drafts</h1>
+      <div className={Style.published}>
+        <h1>My Published</h1>
         <main>
-        {drafts.length > 0 ? drafts.map((post) => (
+        {published.length > 0 ? published.map((post) => (
         <div key={post.id} className={Style.post}>
           <Post post={post} />
         </div>
-        )) : <p>... No Drafts available</p>}
+        )) : <p>... No published available</p>}
         </main>
       </div>
     </Layout>
   );
 };
 
-export default Drafts;
+export default Published;

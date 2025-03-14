@@ -11,12 +11,10 @@ export default async function handle(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-  const { title, content } = req.body;
   const session = await getServerSession(req, res, options);
   const result = await prisma.post.create({
     data: {
-      title: title,
-      content: content,
+      ...req.body,
       author: { connect: { email: session?.user?.email as string } },
     },
   });

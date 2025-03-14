@@ -1,44 +1,134 @@
   
   .postWrapper{
-    border : 1px black solid;
+    width: 400px;
+    max-height: 500px;
     background-color : white;
+    box-shadow: 1px 1px 3px #aaa;
     color: inherit;
-    padding: 2rem;
+    border-radius: 8px;
     h2{
-        margin-bottom : 10px;
-      }
+      margin-bottom: 2px;
+      font-weight: 700;
+      size: 35px;
+      text-transform: capitalize;
+    }
       .postContent{
         margin-top: 20px;
       }
+    img {
+      height: 300px;
+      width: 400px;
+    }
+  }
+
+  .postContentWrapper{
+    margin: 20px 0 20px 0;
   }
 
 
   .inputWrapper{
     margin: 2rem 0 2rem 0;
+    max-width: 500px;
   }
 
   .post {
     background: var(--geist-background);
     transition: box-shadow 0.1s ease-in;
     margin-bottom : 20px;
-
-    &:hover {
-      box-shadow: 1px 1px 3px #aaa;
-    }
-  
-    &:first-child {
-      margin-top: 2rem;
-    }
+    border-color: #9f9f9f;
+    width: 400px;
     
     h1{
       margin-bottom: 20px;
     }
   }
 
+  .drafts{
+    width: 100%;
+    main{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      align-items : flex-end;
+    }
+    h1 {
+      margin-bottom: 20px;
+      font-size: 25px;
+    }
+  }
+
+  .published{
+    width: 100%;
+    main{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      align-items : flex-end;
+    }
+    h1 {
+      margin-bottom: 20px;
+      font-size: 25px;
+    }
+  }
+
+  .createMessage{
+    width: 500px;
+    padding: 20px;
+    border: 1px solid black;
+    margin-bottom: 10px;
+    form{
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        input{
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+        button{
+          border: 1px solid black;
+          padding: 10px;
+        }
+    }
+  }
+
+  .postOverviewPublic{
+    margin: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    h1{
+      padding: 20px 0 20px 0;
+      font-size: 35px;
+    }
+    img{
+      max-height: 500px;
+      object-fit: cover;
+      margin-bottom: 30px;
+    }
+
+  }
+
+  .buttonGroup{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    button {
+      margin: 10px 0 10px 0;
+      padding: 10px 15px 10px 15px;
+      border: 1px solid #9f9f9f;
+      border-radius: 8px;
+      
+    }
+  }
+
   .postOverviewWrapper {
     border: 1px black solid;
     padding: 2rem;
-    margin-top : 20px;
+    margin-top : 200px;
+    min-width: 700px;
     input[type='text'],
     textarea {
       width: 100%;
@@ -47,6 +137,9 @@
       border-radius: 0.25rem;
       border: 0.125rem solid rgba(0, 0, 0, 0.2);
   }
+    h1{
+      font-size: 25px;
+    }
     h2{
       padding-bottom : 10px;
     }

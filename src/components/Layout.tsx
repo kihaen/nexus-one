@@ -11,7 +11,11 @@ const Layout = (props : Props) : JSX.Element => (
     <div className="layout">{props.children}</div>
     <style jsx>{`
       .layout {
-        padding: 0 2rem;
+        padding: 0 2rem 4rem 2rem;
+        display : flex;
+        flex-direction : column;
+        justify-content: center;
+        align-items : center;
       }
     `}</style>
   </div>

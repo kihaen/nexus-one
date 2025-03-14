@@ -2,7 +2,8 @@
     background: var(--geist-background);
     padding: 3rem;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
     input[type='text'],
     textarea {
@@ -13,7 +14,7 @@
         border: 0.125rem solid rgba(0, 0, 0, 0.2);
     }
 
-    input[type='submit'] {
+    button[type='submit'] {
         background: #ececec;
         border: 0;
         padding: 1rem 2rem;
