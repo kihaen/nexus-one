@@ -19,7 +19,7 @@ model Post {
   author      User?@relation(fields:[authorId], references:[id])
   authorId    String
   coverImg    String?
-  location    String
+  location    String  @default("")
 }
 
 model Message {
