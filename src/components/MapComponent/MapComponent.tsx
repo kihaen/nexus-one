@@ -41,9 +41,7 @@ const MapComponent = ({clickMapHandler, height, width, showDot = false, initialM
 
         const osmLayer = new TileLayer({
             preload: Infinity,
-            source: new StadiaMaps({
-              layer : "osm_bright"
-            })
+            source: new OSM()
         });
 
         const mousePositionControl = new MousePosition({
