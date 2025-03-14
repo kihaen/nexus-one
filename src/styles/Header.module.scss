@@ -3,6 +3,8 @@
 }
 
 .left{
+    display: flex;
+    align-items: center;
     a[data-active='true'] {
         color: white;
     }
@@ -28,11 +30,13 @@
 
 
 .right {
+    display: flex;
     margin-left: auto !important;
+    align-items: center;
     p {
         display: inline-block;
         font-size: 13px;
-        padding-right: 1rem;
+        margin-right: 1rem;
     }
     a {
         border: 1px solid var(--geist-foreground);
@@ -43,9 +47,17 @@
         border: none;
     }
 }
+
+.accountNameHeader{
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
 .loginLink{
     display: block;
 }
+
 @media only screen and (max-width: 830px) {
     .left {
       a:not(:first-child) {
@@ -70,6 +82,7 @@
 
 .nav {
     display: flex;
+    flex-direction: row;
     padding: 1rem;
     height: 3.5rem;
     align-items: center;

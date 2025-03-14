@@ -71,8 +71,8 @@ const Header = (): JSX.Element => {
   } else if (session) {
     right = (
       <div className={Style.right}>
-        <p>
-          {session?.user?.name} ({session?.user?.email})
+        <p className={Style.accountNameHeader}>
+          {session?.user?.email}
         </p>
         <span className={Style.mobileMenu}>
           <MobileMenu items={mobileMenuItems} />
