@@ -1,7 +1,7 @@
   
   .postWrapper{
     width: 400px;
-    max-height: 500px;
+    height: 500px;
     background-color : white;
     box-shadow: 1px 1px 3px #aaa;
     color: inherit;
@@ -125,10 +125,8 @@
   }
 
   .postOverviewWrapper {
-    border: 1px black solid;
     padding: 2rem;
-    margin-top : 200px;
-    min-width: 700px;
+    width: 700px;
     input[type='text'],
     textarea {
       width: 100%;
@@ -182,4 +180,19 @@
         transition-duration: .3s;
       }
     } 
+  }
+
+  @media (max-width : 830px) {
+    .createMessage{
+      width: 400px;
+    }
+    .postOverviewPublic{
+      margin: 0;
+    }
+    .postOverviewWrapper{
+      padding: 10px;
+      min-width: 350px;
+      margin-top: 20px;
+      width: 100%
+    }
   }

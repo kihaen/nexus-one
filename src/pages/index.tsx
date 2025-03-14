@@ -55,8 +55,6 @@ const Home = (props : Props): JSX.Element =>{ //props here is bypass
     })
   }, [latestFeed])
 
-  console.log(mapCoordinates)
-
   return (
     <>
       <main className={Style.main}>

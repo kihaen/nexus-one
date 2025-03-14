@@ -49,6 +49,23 @@
   margin: 2rem 0 10px 0;
 }
 
+@media (max-width: 800px) {
+  .left{
+    display: none;
+  }
+  .right{
+    margin: 0;
+    width: 100%;
+  }
+  .homeOrientation{
+    flex-direction: initial;
+    flex-wrap: wrap;
+  }
+  .page{
+    margin: 20px 10px 0 10px;
+  }
+}
+
 /* Questionable CSS below here -------------- */
 
 

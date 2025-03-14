@@ -166,7 +166,7 @@ const Post = (props : any) => {
                 <button className={Style.publishDraft} onClick={() => publishPost(props.id)}>Publish</button>
             )}
             {userHasValidSession && postBelongsToUser && (
-              <button className={Style.deletePost} onClick={() => editPost(props.id)}>Edit</button>
+              <button className={Style.deletePost} onClick={() => editPost(props.id)}>{!props.published ? "Save" : "Edit"}</button>
             )}
             {userHasValidSession && postBelongsToUser && (
               <button className={Style.deletePost} onClick={() => deletePost(props.id)}>Delete</button>

@@ -16,6 +16,12 @@ const Layout = (props : Props) : JSX.Element => (
         flex-direction : column;
         justify-content: center;
         align-items : center;
+        min-width : 400px;
+      }
+      @media (max-width : 830px){
+        .layout {
+          padding: 0 20px 30px 20px;
+        }
       }
     `}</style>
   </div>

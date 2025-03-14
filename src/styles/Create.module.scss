@@ -28,4 +28,10 @@
         font-size: 16px;
         font-style: inherit;
     }
-  }
+}
+
+@media (max-width : 830px) {
+    .page{
+        padding: 10px 0 10px 0;
+    }
+}
