@@ -11,7 +11,8 @@ import Image from "next/image";
 import { isValidURL } from "../../utility/util"
 import  MapComponent  from '@/components/MapComponent/MapComponent';
 import { NominatimReverseResponse } from "../../utility/util";
-import placeholder from "../../assets/placeholderImage.png"
+import placeholder from "../../assets/placeholderImage.png";
+import MessageSmall from "../../components/MessageSmall"
 
 // The route is dynamic here so use GetServerSideProps as this is done on runtime
 
@@ -46,6 +47,8 @@ const Post = (props : any) => {
   const [messageBody, setMessageBody] = useState<string>('')
   const [showMessage, setShowMessage] = useState<boolean>(false)
 
+  const[messageSent , setMessageSent] = useState<boolean>(false)
+
   async function publishPost(id: string): Promise<void> {
     await fetch(`/api/publish/${id}`, {
       method: 'PUT',
@@ -75,16 +78,18 @@ const Post = (props : any) => {
     }
   };
 
-  const submitData = async(e : React.SyntheticEvent) =>{
-    e.preventDefault();
-    console.log(props)
+  const submitData = async( message : string) =>{
     try {
-        const body = { title : messageTitle, content :messageBody, messageReceipient : props.author.email, context : props.id };
+        const body = { title , content :message, messageReceipient : props.author.email, context : props.id };
         await fetch('/api/message', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(body),
         });
+        setMessageSent(true)
+        await setTimeout(()=>{
+          setShowMessage(false)
+        }, 1000)
       } catch (error) {
         console.error(error);
       }
@@ -182,27 +187,14 @@ const Post = (props : any) => {
       }
       {!postBelongsToUser && (
         <div className={Style.buttonGroup}>
-          <button onClick={()=> setShowMessage(prev => !prev)}>Send Message</button>
+          <button onClick={()=> setShowMessage(prev => !prev)}>{!showMessage ? "Send Message" : "Hide Message"}</button>
         </div>
       )}
       {showMessage && (
         <>
-        <div className={Style.createMessage}>
-            <form onSubmit={submitData}>
-                <h2>New Message</h2>
-                Title : 
-                <input 
-                    onChange={(e)=> { setMessageTitle(e.target.value)}} 
-                    placeholder='Message Title'
-                />
-                Message
-                <input 
-                    onChange={(e)=> { setMessageBody(e.target.value)}} 
-                    placeholder='Message Body'
-                />
-                <button type="submit"> Send</button>
-            </form>
-        </div>
+        <MessageSmall recepient={props?.author.name} showSuccess={messageSent} onClick={(message)=>{
+            !messageSent && submitData(message)
+        }} />
         </>
       )}
       </>
