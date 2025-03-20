@@ -73,5 +73,6 @@ const PopoverCard = forwardRef<HTMLDivElement, PopoverCardProps>(({ title, descr
         </Card>
     );
 });
+PopoverCard.displayName = "PopoverCard"
 
 export default PopoverCard;
