@@ -27,7 +27,7 @@ Vercel for deployment**
 
 ## Project Goal
 
-To determine the best way to build out a modern day application with server-side rendering
+Building out the best new post listing website out a modern day application with server-side rendering, allow bookings and messaging to allow people to privately list and room out open and available space
 
 
 ## Prism Usuage
