@@ -97,7 +97,7 @@ const MapComponent = ({ clickMapHandler, height, width, showDot = false, initial
       mapRef.current.addEventListener('pointermove', (event: any) => {
         const feature = mapRef.current?.forEachFeatureAtPixel(event.pixel, (feature) => feature);
         if (feature) {
-          const featureCoords = feature.getGeometry()?.getCoordinates();
+          const featureCoords = feature?.getGeometry()?.getExtent() || [];
           const findIndex = initialMarkers.findIndex((pointArr) => pointArr[0] === featureCoords[0] && pointArr[1] === featureCoords[1]);
           if (findIndex >= 0) {
             setOverlayIndex(findIndex);
