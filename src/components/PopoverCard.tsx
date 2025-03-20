@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef } from 'react';
+import React, { forwardRef } from 'react';
 import { Card, Image, Stack, CardBody, Heading, Text, CardFooter, IconButton } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
 import Router from 'next/router';
