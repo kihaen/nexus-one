@@ -1,4 +1,4 @@
-import {Card, CardHeader, Text ,Heading, CardBody,  Box,  CardFooter, Button} from "@chakra-ui/react";
+import {Card, CardHeader, Text ,Heading, CardBody,  Box,  CardFooter, Button, Portal} from "@chakra-ui/react";
 import {EmailIcon, CheckIcon} from "@chakra-ui/icons";
 import {useState} from "react"
 
@@ -12,9 +12,9 @@ import {useState} from "react"
                 <Text>To : {recepient}</Text>
                 </Box>
             </CardHeader>
-            <CardBody minWidth={"md"} >
+            <CardBody minWidth={"sm"} >
                 <Text fontWeight={"700"}>Message</Text>
-                <textarea style={{width:"100%", padding : "10px", border : "solid 1px #949494", marginTop : "10px"}} disabled={showSuccess} value={showSuccess ? "Message Sent!" : message} onChange ={(e)=>{
+                <textarea style={{width:"100%", padding : "10px", border : "solid 1px #949494", marginTop : "10px", minHeight : "100px"}} disabled={showSuccess} value={showSuccess ? "Message Sent!" : message} onChange ={(e)=>{
                     setMessage(e.target.value)
                 }} />
             </CardBody>

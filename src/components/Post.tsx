@@ -37,7 +37,6 @@ const Post = ({ post } : Post): JSX.Element => {
       </div>
     </>
     </Card>
-
   );
 };
 

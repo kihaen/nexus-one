@@ -23,9 +23,9 @@ const Header = (): JSX.Element => {
 
   const links = [
     { href: '/', label: 'Home', icon: headerIcon, show: true },
-    { href: '/drafts', label: 'My Drafts', show: !!session },
-    { href: '/published', label: 'My Published', show: !!session },
-    { href: '/inbox', label: 'My Inbox', show: !!session },
+    { href: '/drafts', label: 'Drafts', show: !!session },
+    { href: '/published', label: 'Published', show: !!session },
+    { href: '/inbox', label: 'Inbox', show: !!session },
   ];
 
   const mobileMenuItems = [

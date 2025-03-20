@@ -107,21 +107,34 @@ const Post = (props : any) => {
 
   const postBelongsToUser = session?.user?.email === props.author?.email;
   const userHasValidSession = Boolean(session);
+  console.log(props.coordinate, props)
   return (
     <Layout>
       <>
       {!showEdit && 
       <div className={Style.postOverviewPublic}>
-        <h1>{title}</h1>
+        <div className={Style.postOverviewHeaderWrapper}>
+          <h1>{title}</h1>
+          {postBelongsToUser && userHasValidSession && 
+          <div className={Style.buttonGroup}>
+            <button onClick={()=> setShowEdit(prev => !prev)}>{showEdit ? 'Show Preview' : 'Edit Post'}</button>
+            {!props.published  && <button onClick={()=>publishPost(props.id)}>Publish</button>}
+          </div>
+        }
+        </div>
         <Image src={isValidURL(props?.coverImg)? props?.coverImg : placeholder} alt={""} width={1000} height={500}/>
         <p>{props?.author.name}</p>
-        <h3>Description</h3>
         <p>{props?.description}</p>
         {props?.content && <ReactMarkdown>{props.content}</ReactMarkdown>}
+        <div className={Style.section}>
+          <h2>{`Location`}</h2>
+          <p>{`${props.location}`}</p>
+          {props?.coordinate.length > 0 && <MapComponent initialMarkers={props?.coordinate ? [props?.coordinate] : undefined} zoom={16} center />}
+        </div>
       </div>}
       {showEdit && 
         <div className={Style.postOverviewWrapper}>
-          <MapComponent clickMapHandler={handleMapClick} showDot initialMarkers={[props.coordinate]}/>
+          <MapComponent clickMapHandler={handleMapClick} showDot initialMarkers={[props.coordinate]} />
           <h1>Edit Post</h1>
           <div className={Style.postContentWrapper}>
           Title
@@ -177,12 +190,6 @@ const Post = (props : any) => {
               <button className={Style.deletePost} onClick={() => deletePost(props.id)}>Delete</button>
             )}
           </div>
-        </div>
-      }
-      {postBelongsToUser && userHasValidSession && 
-        <div className={Style.buttonGroup}>
-          <button onClick={()=> setShowEdit(prev => !prev)}>{showEdit ? 'Show Preview' : 'Edit Post'}</button>
-          {!props.published  && <button onClick={()=>publishPost(props.id)}>Publish</button>}
         </div>
       }
       {!postBelongsToUser && (

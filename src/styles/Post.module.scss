@@ -18,6 +18,7 @@
     img {
       height: 300px;
       width: 390px;
+      object-fit: cover;
     }
   }
 
@@ -98,17 +99,25 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
     h1{
       padding: 20px 0 20px 0;
       font-size: 35px;
     }
     img{
-      max-height: 1000px;
+      max-height: 500px;
       object-fit: cover;
       margin-bottom: 30px;
     }
 
+  }
+
+  .postOverviewHeaderWrapper{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .section{
+    margin: 20px 0 20px 0;
   }
 
   .buttonGroup{
@@ -120,8 +129,9 @@
       padding: 10px 15px 10px 15px;
       border: 1px solid #9f9f9f;
       border-radius: 8px;
-      
+      max-height: 50px;
     }
+    
   }
 
   .postOverviewWrapper {

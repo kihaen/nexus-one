@@ -1,12 +1,10 @@
-// MapComponent.js
 import React, { useState, useEffect, useRef } from 'react';
 import { Map, View } from 'ol';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
-import Google from 'ol/source/Google.js';
-import {useGeographic} from 'ol/proj';
-import {createStringXY} from 'ol/coordinate.js';
-import {defaults as defaultControls} from 'ol/control/defaults.js';
+import { useGeographic } from 'ol/proj';
+import { createStringXY } from 'ol/coordinate.js';
+import { defaults as defaultControls } from 'ol/control/defaults.js';
 import { NominatimReverseResponse } from '@/utility/util';
 import 'ol/ol.css';
 import { getAddressFromLatLng } from '@/utility/util';
@@ -16,29 +14,38 @@ import VectorSource from 'ol/source/Vector';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import { Style, Icon } from 'ol/style';
-import { StadiaMaps } from 'ol/source';
+import Overlay from 'ol/Overlay.js';
+import { PostProps } from '../Post';
 
-interface MapComponentProps  {
-    clickMapHandler?  : ( address : Promise<NominatimReverseResponse>, coord? : number[]) => void
-    height? : string
-    width? : string
-    showDot? : boolean
-    initialMarkers? :  number[][]
+import PopoverCard from '../PopoverCard'
+
+interface HoverContent extends PostProps{
+  footer? : JSX.Element;
 }
 
-const MapComponent = ({clickMapHandler, height, width, showDot = false, initialMarkers = []} : MapComponentProps)=> {
-    const [map, setMap] = useState<Map | null>(null);
-    const [vectorLayer, setVectorLayer] = useState<VectorLayer | null>(null);
+interface MapComponentProps {
+    clickMapHandler?: (address: Promise<NominatimReverseResponse>, coord?: number[]) => void;
+    height?: string;
+    width?: string;
+    showDot?: boolean;
+    initialMarkers?: number[][];
+    hoverContent? : HoverContent[];
+    zoom?: number;
+    center?: boolean;
+    showHover? : boolean;
+}
+
+const MapComponent = ({ clickMapHandler, height, width, showDot = false, initialMarkers = [], zoom = 11, center = false, showHover = false, hoverContent = [] }: MapComponentProps) => {
+    const mapRef = useRef<Map | null>(null);
+    const vectorLayerRef = useRef<VectorLayer | null>(null);
+    const currentOverlay = useRef<Overlay | null>(null);
+    const [overlayIndex, setOverlayIndex] = useState<number>(-1);
+    const popOverRef = useRef<HTMLDivElement | null>(null);
+    const [showPopover, setShowPopover] = useState<boolean>(false)
+
     useGeographic();
 
     useEffect(() => {
-      console.log("mapComponent initialize was called")
-        // const source = new Google({
-        //   key : process.env.NEXT_PUBLIC_GOOGLE_MAP_TILE_KEY || "",
-        //   scale: 'scaleFactor2x',
-        //   highDpi: true,
-        // });
-
         const osmLayer = new TileLayer({
             preload: Infinity,
             source: new OSM()
@@ -61,42 +68,72 @@ const MapComponent = ({clickMapHandler, height, width, showDot = false, initialM
             target: "uniqueMap",
             layers: [osmLayer, vectorLayer],
             view: new View({
-                center: [-73.92475163156223, 40.7021485032154],
-                zoom: 11,
+                center: center && initialMarkers ? initialMarkers[0] : [-73.92475163156223, 40.7021485032154],
+                zoom,
             }),
         });
 
-        setMap(map);
-        setVectorLayer(vectorLayer);
+        mapRef.current = (map);
+        vectorLayerRef.current = (vectorLayer);
 
         return () => {
             map.setTarget(undefined);
-            
         };
     }, []);
+    
 
-    useEffect(() => {
-      if (map) {
-        console.log( initialMarkers, "initial markers")
-          initialMarkers.forEach((marker)=> { // paint initial markers
-            addDotToMap(marker[1], marker[0])
-          })
-          map.addEventListener('click', (event : any)=>{ // TODO : update typing here
-            console.log(event.coordinate[0], event.coordinate[1])
-            clickMapHandler?.(getAddressFromLatLng(event.coordinate[0], event.coordinate[1]), [event.coordinate[0], event.coordinate[1]])
-            if (showDot){
-              clearDots()
-              addDotToMap(event.coordinate[1], event.coordinate[0])
-            } 
-        });
-      }
-      return ()=>{
-        map?.removeEventListener('click', ()=>{});
-      }
-    }, [map]);
+    useEffect(() => { // NOTE : HANDLE MULTIPLE CLUSTER of points in one area!
+        if (mapRef.current) {
+            initialMarkers.forEach((marker, index) => { // paint initial markers
+                addDotToMap(marker[1], marker[0]);
+            });
+            
+
+            mapRef.current.addEventListener('click', (event: any) => { // TODO: update typing here
+                clickMapHandler?.(getAddressFromLatLng(event.coordinate[0], event.coordinate[1]), [event.coordinate[0], event.coordinate[1]]);
+                if (showDot) {
+                    clearDots();
+                    addDotToMap(event.coordinate[1], event.coordinate[0]);
+                }
+            });
+
+            mapRef.current.addEventListener('pointermove', (event: any) => {
+                const feature = (event.originalEvent.target.closest('.ol-control') || event.originalEvent.target.closest('ol-selectable'))
+                    ? undefined
+                    : mapRef.current?.forEachFeatureAtPixel(event.pixel, function (feature) {
+                        return feature;
+                    });
+                const featureCoords = feature?.getGeometry()?.getExtent() || [];
+                const findIndex = initialMarkers.findIndex((pointArr) => pointArr[0] === featureCoords[0] && pointArr[1] === featureCoords[1]);
+                findIndex > 0 && setOverlayIndex(findIndex)
+                if(popOverRef.current && feature){
+                  const findOverlay = mapRef.current?.getOverlayById(findIndex)
+                  if(findOverlay){
+                    // needs to refresh the overlay in order to move overlay properly ?? needs investigation why
+                    mapRef.current?.removeOverlay(findOverlay)
+                  } 
+                  const overlay = new Overlay({
+                    element: popOverRef.current,
+                    positioning: 'top-center',
+                    id : findIndex, // Potentially change
+                    position : initialMarkers[findIndex]
+                  });
+                  setShowPopover(true)
+                  mapRef.current?.addOverlay(overlay);
+                  currentOverlay.current = overlay;
+                  overlay.setPosition(initialMarkers[findIndex]);
+                }
+            });
+        }
+
+        return () => {
+            mapRef.current?.removeEventListener('click', () => {});
+            mapRef.current?.removeEventListener('pointermove', () => {});
+        };
+    }, [mapRef.current, popOverRef.current]);
 
     const addDotToMap = (lat: number, lon: number) => {
-        if (!map || !vectorLayer) return;
+        if (!mapRef.current || !vectorLayerRef.current) return;
 
         const point = new Point([lon, lat]);
         const feature = new Feature({
@@ -107,23 +144,46 @@ const MapComponent = ({clickMapHandler, height, width, showDot = false, initialM
             image: new Icon({
                 src: 'https://openlayers.org/en/latest/examples/data/dot.png',
                 scale: .75,
-                color : [60, 179, 113] //rgba
+                color: [60, 179, 113] //rgba
             }),
         }));
 
-        const vectorSource = vectorLayer.getSource()
+        const vectorSource = vectorLayerRef.current.getSource();
         vectorSource?.addFeature(feature);
     };
 
-    const clearDots = () =>{
-      if (!map || !vectorLayer) return;
-      const vectorSource = vectorLayer.getSource()
-      vectorSource?.clear()
-    }
+    const clearDots = () => {
+        if (!mapRef.current || !vectorLayerRef.current) return;
+        const vectorSource = vectorLayerRef.current.getSource();
+        vectorSource?.clear();
+    };
 
+    const closeModal = ()=>{
+      if( mapRef.current && currentOverlay.current){
+        mapRef.current.removeOverlay(currentOverlay.current)
+      }
+      setShowPopover(false)
+    }
+    const htmlMapRef = useRef(null)
+
+    const {title, description, coverImg, footer, id : postId} = hoverContent?.[overlayIndex] || ""
     return (
-        <div style={{height: height ? height : '500px', width: width ? width : '100%', margin: '30px 0 20px 0'}} id="uniqueMap" className="map-container" />
+        <>
+            <div style={{ height: height ? height : '500px', width: width ? width : '100%', margin: '30px 0 20px 0' }} id="uniqueMap" className="map-container" ref={htmlMapRef}/>
+            { showHover  && htmlMapRef.current && mapRef.current && 
+              <PopoverCard
+                title={title}
+                display={showPopover ? 'flex' : 'none'}
+                description={description}
+                coverImg={coverImg}
+                footer={footer}
+                postId={postId}
+                onClose={closeModal}
+                ref={popOverRef}
+              />
+            }
+        </>
     );
-}
+};
 
 export default MapComponent;

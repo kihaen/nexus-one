@@ -62,7 +62,7 @@ const Home = (props : Props): JSX.Element =>{ //props here is bypass
           <div className={Style.homeOrientation}>
           <div className={Style.left}>
             <Search className={Style.inputWrapper} placeholder='Search' onChange={(e)=>{onChangeSearch(e.target.value)}} value={searchText.current}/>
-            <MapComponent height='80vh' initialMarkers={mapCoordinates}/>
+            <MapComponent height='80vh' initialMarkers={mapCoordinates} hoverContent={latestFeed} showHover />
           </div>
           <div className={Style.right}>
             <div className={Style.page}>
