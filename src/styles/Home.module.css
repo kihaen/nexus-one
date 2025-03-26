@@ -32,9 +32,8 @@
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
-  justify-content: center;
+  justify-content: left;
   align-items : flex-end;
-  width: 100%;
 }
 
 .publicTitle{
@@ -43,17 +42,40 @@
   font-weight: 700;
 }
 
-
+.filters{
+  width: 100%;
+  padding: 10px;
+  border-radius: 1px;
+  margin: 20px 0 20px;
+  display: flex;
+  justify-content: center;
+  .inputWrapper{
+    width: 300px;
+  };
+}
 
 .inputWrapper{
-  margin: 2rem 0 10px 0;
+  margin: 10px;
+}
+
+@media (max-width: 1600px) {
+  .right{
+    display: none;
+  }
+  .left{
+    margin: 0;
+    width: 100%;
+  }
+  .postWrapper{
+    width: 20vw;
+  }
 }
 
 @media (max-width: 800px) {
-  .left{
+  .right{
     display: none;
   }
-  .right{
+  .left{
     margin: 0;
     width: 100%;
   }
@@ -62,7 +84,7 @@
     flex-wrap: wrap;
   }
   .page{
-    margin: 20px 10px 0 10px;
+    margin: 0px 10px 0 10px;
   }
 }
 
@@ -318,6 +340,9 @@
     grid-template-columns: repeat(2, 50%);
   }
 }
+@media (min-width: 701px) and (max-width: 1800px) {
+
+}
 
 @media (prefers-color-scheme: dark) {
   .vercelLogo {
@@ -329,6 +354,8 @@
     filter: invert(1) drop-shadow(0 0 0.3rem #ffffff70);
   }
 }
+
+
 
 @keyframes rotate {
   from {

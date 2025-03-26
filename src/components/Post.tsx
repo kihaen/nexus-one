@@ -3,7 +3,9 @@ import Router from "next/router";
 import Image from "next/image";
 import placeholder from '../assets/placeholderImage.png'
 import { isValidURL } from "@/utility/util";
-import { Card } from "antd";
+import {
+  Card,
+} from "@/components/ui/card"
 
 import Style from "../styles/Post.module.scss"
 
@@ -28,12 +30,13 @@ type Post = {
 const Post = ({ post } : Post): JSX.Element => {
   const authorName = post.author ? post.author.name : "Unknown author";
   return (
-    <Card className={Style.postWrapper} hoverable cover={<Image width={338} height={300} src={isValidURL(post?.coverImg)? post?.coverImg : placeholder} alt=''/>} onClick={() => Router.push("/p/[id]", `/p/${post.id}`)}>
+    <Card className={Style.postWrapper} onClick={() => Router.push("/p/[id]", `/p/${post.id}`)}>
       <>
-      <h2>{post.title}</h2>
-      <small>By {authorName}</small>
+      <Image width={400} height={250} className={Style.postImage} src={isValidURL(post?.coverImg)? post?.coverImg : placeholder} alt=''/>
       <div className={Style.postContent}>
-      <p>{post.description}</p>
+        <h2>{post.title}</h2>
+        <small>By {authorName}</small>
+        <p>{post.description}</p>
       </div>
     </>
     </Card>

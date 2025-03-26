@@ -1,24 +1,33 @@
   
   .postWrapper{
-    width: 390px;
-    height: 500px;
+    min-width: 300px;
+    width: 21vw;
+    max-width: 400px;
+    height: 400px;
     background-color : white;
-    box-shadow: 1px 1px 3px #aaa;
+    // box-shadow: 1px 1px 3px #aaa;
+    box-shadow: none;
     color: inherit;
     border-radius: 8px;
+    gap : 10px; 
+    overflow: hidden;
     h2{
       margin-bottom: 2px;
       font-weight: 700;
       size: 35px;
       text-transform: capitalize;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
       .postContent{
-        margin-top: 20px;
+        padding-top: 10px;
+        height: 100px;
+        text-overflow: ellipsis;
       }
     img {
-      height: 300px;
-      width: 390px;
+      height: 250px;
       object-fit: cover;
+      border-radius: 10px;
     }
   }
 
@@ -204,5 +213,11 @@
       min-width: 350px;
       margin-top: 20px;
       width: 100%
+    }
+  }
+
+  @media (max-width: 1600px) {
+    .postWrapper{
+      width: 20vw;
     }
   }

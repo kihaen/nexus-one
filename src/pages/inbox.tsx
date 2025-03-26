@@ -6,7 +6,7 @@ import Layout from '../components/Layout';
 import Message, { MessageProps } from '../components/Message';
 import prisma from '../../lib/prisma';
 import Style from '../styles/Inbox.module.scss';
-import { Input } from 'antd';
+import { Input } from '@chakra-ui/react';
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 
@@ -43,7 +43,7 @@ type Props = {
 
 const Inbox = (props : Props): JSX.Element => {
   const { data: session } = useSession();
-  const {Search} = Input;
+//   const {Search} = Input;
   const feed = props.messages // double check
 
   const [searchInput, changeInput] = useState<string>('');
@@ -74,7 +74,7 @@ const Inbox = (props : Props): JSX.Element => {
 
   return (
     <Layout>
-      <Search className={Style.inputWrapper} placeholder='Search' onChange={(e)=>{onChangeSearch(e.target.value)}} value={searchInput}/>
+      <Input className={Style.inputWrapper} placeholder='Search' onChange={(e)=>{onChangeSearch(e.target.value)}} value={searchInput}/>
       <div className={Style.inboxWrapper}>
         <h1>My Inbox</h1>
         <main>
