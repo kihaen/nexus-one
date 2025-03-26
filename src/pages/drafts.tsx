@@ -7,7 +7,7 @@ import  MapComponent  from '@/components/MapComponent/MapComponent'
 import Post, { PostProps } from '../components/Post';
 import prisma from '../../lib/prisma';
 import Style from '../styles/Post.module.scss';
-import { Input } from 'antd';
+import { Input } from '@chakra-ui/react';
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
@@ -38,7 +38,7 @@ type Props = {
 
 const Drafts = (props : Props): JSX.Element => {
   const { data: session } = useSession();
-  const {Search} = Input;
+  // const {Search} = Input;
   const feed = props.drafts // double check
 
   const [searchInput, changeInput] = useState<string>('');
@@ -67,7 +67,7 @@ const Drafts = (props : Props): JSX.Element => {
 
   return (
     <Layout>
-      <Search className={Style.inputWrapper} placeholder='Search' onChange={(e)=>{onChangeSearch(e.target.value)}} value={searchInput}/>
+      <Input className={Style.inputWrapper} placeholder='Search' onChange={(e)=>{onChangeSearch(e.target.value)}} value={searchInput}/>
       <div className={Style.drafts}>
         <h1>My Drafts</h1>
         <main>

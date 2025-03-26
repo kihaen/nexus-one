@@ -2,16 +2,18 @@ import Layout from '@/components/Layout'
 import Post from '@/components/Post'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Inter } from 'next/font/google'
-import { Customer } from '@/components/Customer'
+// import { Customer } from '@/components/Customer'
 import { GetServerSideProps } from 'next/types'
 import  MapComponent  from '@/components/MapComponent/MapComponent'
 import prisma from "../../lib/prisma";
 import { PostProps } from '@/components/Post'
-import { Input } from 'antd'
+import { Input } from '@chakra-ui/react'
 import Style from "../styles/Home.module.css";
+import {
+  Card,
+} from "@/components/ui/card"
 
 const inter = Inter({ subsets: ['latin'] })
-const { Search } = Input;
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const feed = await prisma.post.findMany({
@@ -59,12 +61,11 @@ const Home = (props : Props): JSX.Element =>{ //props here is bypass
     <>
       <main className={Style.main}>
         <Layout>
+          <Card className={Style.filters}>
+            <Input className={Style.inputWrapper} placeholder='Search' onChange={(e)=>{onChangeSearch(e.target.value)}} value={searchText.current}/>
+          </Card>
           <div className={Style.homeOrientation}>
           <div className={Style.left}>
-            <Search className={Style.inputWrapper} placeholder='Search' onChange={(e)=>{onChangeSearch(e.target.value)}} value={searchText.current}/>
-            <MapComponent height='80vh' initialMarkers={mapCoordinates} hoverContent={latestFeed} showHover />
-          </div>
-          <div className={Style.right}>
             <div className={Style.page}>
               <h1 className={Style.publicTitle}>Latest Posts</h1>
               <main className={Style.latestPostList}>
@@ -75,6 +76,9 @@ const Home = (props : Props): JSX.Element =>{ //props here is bypass
                 )) : "...no content available"}
               </main>
             </div>
+          </div>
+          <div className={Style.right}>
+            <MapComponent height='80vh' initialMarkers={mapCoordinates} hoverContent={latestFeed} showHover />
           </div>
           </div>
 
