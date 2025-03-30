@@ -1,0 +1,156 @@
+import React, { useEffect, useState } from "react";
+import MapComponent from '@/components/MapComponent/MapComponent';
+import { NominatimReverseResponse } from "@/utility/util";
+import { PostState, PostAction } from "../pages/p/[id]"
+import Style from "../styles/Post.module.scss";
+import useImageToBase64 from "@/hooks/useImageToBase64";
+
+interface PostEditProps {
+  state: PostState;
+  props: any;
+  userHasValidSession: boolean;
+  postBelongsToUser: boolean;
+  onSaveClick: (id: string) => void;
+  onDeleteClick: (id: string) => void;
+  onCancelClick: () => void;
+  onPublishClick: (id: string) => void;
+  onMapClick: (click: Promise<NominatimReverseResponse>, coords: number[] | undefined) => void;
+  dispatch: React.Dispatch<PostAction>;
+}
+
+const PostEdit: React.FC<PostEditProps> = ({
+  state,
+  props,
+  userHasValidSession,
+  postBelongsToUser,
+  onSaveClick,
+  onDeleteClick,
+  onCancelClick,
+  onPublishClick,
+  onMapClick,
+  dispatch
+}) => {
+
+  const {base64Images, imagesToBase64, clearImages} = useImageToBase64()
+
+  useEffect(()=>{
+    if(base64Images){
+        dispatch({ type: 'SET_FILES', payload: base64Images })
+    }
+
+  }, [base64Images])
+
+
+  return (
+    <div className={Style.postOverviewWrapper}>
+      <MapComponent 
+        clickMapHandler={onMapClick} 
+        showDot 
+        initialMarkers={[state.coordinates]} 
+      />
+      
+      <h1>Edit Post</h1>
+      
+      <div className={Style.postContentWrapper}>
+        <div className={Style.formGroup}>
+          <label>Title</label>
+          <input
+            autoFocus
+            onChange={(e) => dispatch({ type: 'SET_TITLE', payload: e.target.value })}
+            placeholder="Title"
+            value={state.title}
+            type="text"
+          />
+        </div>
+
+        <div className={Style.formGroup}>
+            <div className={Style.selectedImages}>
+                {props.files.length > 0 && props.files.map((link : string)=> <img key={link+'img'} width="160" height="160" src={link || ''}/>)}
+                {base64Images.length > 0 && base64Images.map((image : Base64URLString, index : number)=> <img key={index+'img'} width="160" height="160" src={image || ''}/>)}
+            </div>
+          <label>Select Images</label>
+          <div className={Style.fileSelectionWrapper}>
+            <input
+                onChange={(e) => {
+                    const file = e?.target?.files;
+                    imagesToBase64(file)
+                }}
+                style={{cursor : "pointer"}}
+                type="file"
+                multiple
+            />
+            <button onClick={clearImages}>Clear</button>
+          </div>
+
+        </div>
+
+        <div className={Style.formGroup}>
+          <label>Location</label>
+          <input
+            onChange={(e) => dispatch({ type: 'SET_LOCATION', payload: e.target.value })}
+            placeholder="location"
+            value={state.location}
+            type="text"
+          />
+        </div>
+
+        <div className={Style.formGroup}>
+          <label>Description</label>
+          <textarea
+            onChange={(e) => dispatch({ type: 'SET_DESCRIPTION', payload: e.target.value })}
+            placeholder="description"
+            value={state.description}
+            rows={3}
+          />
+        </div>
+
+        <p className={Style.postOverviewAuthor}>By {props?.author?.name || "Unknown author"}</p>
+
+        <div className={Style.formGroup}>
+          <label>Content</label>
+          <textarea
+            onChange={(e) => dispatch({ type: 'SET_CONTENT', payload: e.target.value })}
+            placeholder="Content"
+            value={state.content}
+            rows={8}
+          />
+        </div>
+      </div>
+
+      <div className={Style.editButtons}>
+        <button className={Style.secondaryButton} onClick={onCancelClick}>
+          Cancel
+        </button>
+        
+        {userHasValidSession && postBelongsToUser && (
+          <button 
+            className={Style.primaryButton} 
+            onClick={() => onSaveClick(props.id)}
+          >
+            {!props.published ? "Save" : "Update"}
+          </button>
+        )}
+        
+        {!props.published && userHasValidSession && postBelongsToUser && (
+          <button 
+            className={Style.publishButton} 
+            onClick={() => onPublishClick(props.id)}
+          >
+            Publish
+          </button>
+        )}
+        
+        {userHasValidSession && postBelongsToUser && (
+          <button 
+            className={Style.dangerButton} 
+            onClick={() => onDeleteClick(props.id)}
+          >
+            Delete
+          </button>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default PostEdit;

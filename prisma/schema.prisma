@@ -19,6 +19,7 @@ model Post {
   author      User?@relation(fields:[authorId], references:[id])
   authorId    String
   coverImg    String?
+  files       String[] @default([])
   location    String  @default("")
 }
 

@@ -23,9 +23,6 @@ const Header = (): JSX.Element => {
 
   const links = [
     { href: '/', label: 'Home', icon: headerIcon, show: true },
-    { href: '/drafts', label: 'Drafts', show: !!session },
-    { href: '/published', label: 'Published', show: !!session },
-    { href: '/inbox', label: 'Inbox', show: !!session },
   ];
 
   const mobileMenuItems = [
@@ -77,12 +74,6 @@ const Header = (): JSX.Element => {
         <span className={Style.mobileMenu}>
           <MobileMenu items={mobileMenuItems} />
         </span>
-        <Link href="/create">
-          <button>New post</button>
-        </Link>
-        <button onClick={() => signOut()}>
-          <a>Log out</a>
-        </button>
       </div>
     );
   }
