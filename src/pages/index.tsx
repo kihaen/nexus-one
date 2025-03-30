@@ -2,7 +2,6 @@ import Layout from '@/components/Layout'
 import Post from '@/components/Post'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Inter } from 'next/font/google'
-// import { Customer } from '@/components/Customer'
 import { GetServerSideProps } from 'next/types'
 import  MapComponent  from '@/components/MapComponent/MapComponent'
 import prisma from "../../lib/prisma";
@@ -34,7 +33,7 @@ type Props = {
 }
 
 
-const Home = (props : Props): JSX.Element =>{ //props here is bypass 
+const Home = (props : Props): JSX.Element =>{ 
   const searchText = useRef('')
   const [latestFeed, setLatestFeed] = useState<PostProps[]>([]); 
   const { feed } = props;
@@ -78,7 +77,7 @@ const Home = (props : Props): JSX.Element =>{ //props here is bypass
             </div>
           </div>
           <div className={Style.right}>
-            <MapComponent height='80vh' initialMarkers={mapCoordinates} hoverContent={latestFeed} showHover />
+            <MapComponent height='85vh' initialMarkers={mapCoordinates} hoverContent={latestFeed} showHover />
           </div>
           </div>
 

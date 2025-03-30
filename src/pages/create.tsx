@@ -1,7 +1,7 @@
-import React, { useRef, useState } from 'react';
+import React, {  useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import Router from 'next/router';
-import Style from "../styles/Create.module.scss"
+import Style from "../styles/Post.module.scss";
 
 //test
 import { useSelector, useDispatch } from 'react-redux';
@@ -9,6 +9,7 @@ import { resetData, setData } from '@/store/postState';
 import { NominatimReverseResponse } from '@/utility/util';
 import { RootState } from '../store/index';
 import MapComponent from '@/components/MapComponent/MapComponent';
+import useImageToBase64 from "@/hooks/useImageToBase64";
 
 const Draft = ():JSX.Element => {
   //rtk hooks
@@ -17,7 +18,7 @@ const Draft = ():JSX.Element => {
 
   const [title, setTitle] = useState<string>('')
   const [content, setContent] = useState<string>('')
-  const [coverImg, setCoverImg] = useState<string>('')
+  const [files, setFiles] = useState<string[]>([])
   const [description, setDescription] = useState<string>('')
   const [location, setLocation] = useState<string>('')
   const [coordinate, setCoordinate] = useState<number[]>([])
@@ -25,7 +26,7 @@ const Draft = ():JSX.Element => {
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      const body = { title, content, coverImg, description, location, coordinate};
+      const body = { title, content, files, description, location, coordinate};
       await fetch('/api/post', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -39,29 +40,53 @@ const Draft = ():JSX.Element => {
 
   const handleMapClick = async (click : Promise<NominatimReverseResponse>, coords : number[] | undefined)=>{
     const addressClicked = await click
-    console.log(addressClicked)
     setLocation( addressClicked.display_name)
     coords && setCoordinate(coords)
   }
 
+
+  const {base64Images, imagesToBase64, clearImages} = useImageToBase64()
+
+  useEffect(()=>{
+    if(base64Images){
+      setFiles(base64Images)
+    }
+
+  }, [base64Images])
+
   return (
     <Layout>
-      <div className={Style.page}>
-        <MapComponent clickMapHandler={handleMapClick} showDot/>
+      <div className={Style.postOverviewWrapper}>
+        <MapComponent 
+          clickMapHandler={handleMapClick} 
+          showDot
+        />
+        <h1>New Draft</h1>
         <form onSubmit={submitData}>
-          <h1>New Draft</h1>
           <input
             autoFocus
             onChange={(e)=>{setTitle(e.target.value)}}
             placeholder="Title"
             type="text"
           />
-          Cover Image URL
-          <input
-            onChange={(e)=>{setCoverImg(e.target.value)}}
-            placeholder="Cover Image"
-            type="text"
-          />
+        <div className={Style.formGroup}>
+            <div className={Style.selectedImages}>
+                {base64Images.length > 0 && base64Images.map((image : string, index : number)=> <img key={index+'img'} width="160" height="160" src={image || ''}/>)}
+            </div>
+          <label>Select Images</label>
+          <div className={Style.fileSelectionWrapper}>
+            <input
+                onChange={(e) => {
+                    const file = e?.target?.files;
+                    imagesToBase64(file)
+                }}
+                style={{cursor : "pointer"}}
+                type="file"
+                multiple
+            />
+            <button onClick={clearImages}>Clear</button>
+        </div>
+        </div>
           Description
           <textarea
             cols={50}

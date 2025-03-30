@@ -1,4 +1,4 @@
-// This is your Prisma schema file,
+// Last written by Kihaen 
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
@@ -19,6 +19,7 @@ model Post {
   author      User?@relation(fields:[authorId], references:[id])
   authorId    String
   coverImg    String?
+  coverIdx    Int? @default(0)
   files       String[] @default([])
   location    String  @default("")
 }

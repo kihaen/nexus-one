@@ -9,7 +9,6 @@ import MessageSmall from "../../components/MessageSmall"
 import PostView from "../../views/PostView";
 import PostEdit from "../../views/PostEdit";
 import { NominatimReverseResponse } from "@/utility/util";
-import useImageToBase64 from "@/hooks/useImageToBase64";
 
 // Keep your existing types and reducer
 export type PostState = {
@@ -126,9 +125,25 @@ const Post = (props : any) => {
 
 
   const publishPost = async (id: string): Promise<void> => {
-    await fetch(`/api/publish/${id}`, {
-      method: 'PUT',
-    });
+    try{
+      const body = { 
+        title: state.title, 
+        content: state.content, 
+        coverImg: state.coverImg, 
+        files : state.files,
+        description: state.description, 
+        location: state.location, 
+        coordinate: state.coordinates 
+      };
+      await fetch(`/api/publish/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+    }
+    catch(e){
+      console.error(e);
+    }
     await Router.push('/');
   };
   
