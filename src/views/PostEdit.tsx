@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import MapComponent from '@/components/MapComponent/MapComponent';
 import { NominatimReverseResponse } from "@/utility/util";
 import { PostState, PostAction } from "../pages/p/[id]"
@@ -66,7 +66,7 @@ const PostEdit: React.FC<PostEditProps> = ({
         <div className={Style.formGroup}>
             <div className={Style.selectedImages}>
                 {props.files.length > 0 && props.files.map((link : string)=> <img key={link+'img'} width="160" height="160" src={link || ''}/>)}
-                {base64Images.length > 0 && base64Images.map((image : Base64URLString, index : number)=> <img key={index+'img'} width="160" height="160" src={image || ''}/>)}
+                {base64Images.length > 0 && base64Images.map((image : string, index : number)=> <img key={index+'img'} width="160" height="160" src={image || ''}/>)}
             </div>
           <label>Select Images</label>
           <div className={Style.fileSelectionWrapper}>
