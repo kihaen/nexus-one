@@ -172,7 +172,7 @@ const MapComponent = ({ clickMapHandler, height, width, showDot = false, initial
 
   return (
     <>
-      <div style={{ height: height ? height : '500px', width: width ? width : '100%', margin: '30px 0 20px 0' }} id="uniqueMap" className="map-container" ref={htmlMapRef} />
+      <div style={{ height: height ? height : '500px', width: width ? width : '100%' }} id="uniqueMap" className="map-container" ref={htmlMapRef} />
       {showHover && htmlMapRef.current && mapRef.current &&
         <PopoverCard
           title={title}

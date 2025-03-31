@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['localhost', 'i.imgur.com', 'photos.zillowstatic.com'],
+    domains: ['localhost', 'i.imgur.com', 'photos.zillowstatic.com', 'my-nexus-images.s3.amazonaws.com'],
   },
 }
 

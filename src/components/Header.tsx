@@ -23,9 +23,6 @@ const Header = (): JSX.Element => {
 
   const links = [
     { href: '/', label: 'Home', icon: headerIcon, show: true },
-    { href: '/drafts', label: 'Drafts', show: !!session },
-    { href: '/published', label: 'Published', show: !!session },
-    { href: '/inbox', label: 'Inbox', show: !!session },
   ];
 
   const mobileMenuItems = [
@@ -63,7 +60,7 @@ const Header = (): JSX.Element => {
   } else if (!session) {
     right = (
       <div className={Style.right}>
-          < Link className={Style.loginLink} href="/api/auth/signin" data-active={isActive('/signup')}>
+          <Link className={Style.loginLink} href="/api/auth/signin" data-active={isActive('/signup')}>
             Log in
           </Link>
       </div>
@@ -77,12 +74,6 @@ const Header = (): JSX.Element => {
         <span className={Style.mobileMenu}>
           <MobileMenu items={mobileMenuItems} />
         </span>
-        <Link href="/create">
-          <button>New post</button>
-        </Link>
-        <button onClick={() => signOut()}>
-          <a>Log out</a>
-        </button>
       </div>
     );
   }
@@ -99,10 +90,12 @@ const MobileMenu = ({ items }: { items: any[]}): JSX.Element => {
   return (
     <Menu >
       <MenuButton
+        
         as={IconButton}
         aria-label='Options'
         icon={<HamburgerIcon />}
-        color='black'
+        variant='outline'
+        colorScheme='cyan'
       />
       <MenuList>
         {items.map((item) => (
