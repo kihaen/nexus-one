@@ -6,11 +6,12 @@ import { GetServerSideProps } from 'next/types'
 import  MapComponent  from '@/components/MapComponent/MapComponent'
 import prisma from "../../lib/prisma";
 import { PostProps } from '@/components/Post'
-import { Input } from '@chakra-ui/react'
+import { Input, InputGroup, InputLeftElement,  } from '@chakra-ui/react'
 import Style from "../styles/Home.module.css";
 import {
   Card,
 } from "@/components/ui/card"
+import { SearchIcon } from '@chakra-ui/icons'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -56,17 +57,22 @@ const Home = (props : Props): JSX.Element =>{
     })
   }, [latestFeed])
 
+  // HOME , LATEST
   return (
     <>
       <main className={Style.main}>
         <Layout>
           <Card className={Style.filters}>
-            <Input className={Style.inputWrapper} placeholder='Search' onChange={(e)=>{onChangeSearch(e.target.value)}} value={searchText.current}/>
+            <InputGroup>
+              <InputLeftElement pointerEvents='none' height={'100%'} paddingLeft={5}>
+                <SearchIcon color='gray.300' />
+              </InputLeftElement>
+              <Input className={Style.inputWrapper} placeholder='Search Address, building, title..' onChange={(e)=>{onChangeSearch(e.target.value)}} value={searchText.current}/>
+            </InputGroup>
           </Card>
           <div className={Style.homeOrientation}>
           <div className={Style.left}>
             <div className={Style.page}>
-              <h1 className={Style.publicTitle}>Latest Posts</h1>
               <main className={Style.latestPostList}>
                 {latestFeed.length > 0 ? latestFeed.map((post) => (
                   <div key={post.id} className={Style.post}>

@@ -22,17 +22,6 @@
   width: 100%;
 }
 
-.page{
-  /* margin: 30px; */
-}
-
-/* .latestPostList{
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  justify-content: left;
-  align-items : flex-end;
-} */
 
 .latestPostList{
   display: grid;

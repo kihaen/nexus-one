@@ -60,7 +60,7 @@ const Header = (): JSX.Element => {
   } else if (!session) {
     right = (
       <div className={Style.right}>
-          < Link className={Style.loginLink} href="/api/auth/signin" data-active={isActive('/signup')}>
+          <Link className={Style.loginLink} href="/api/auth/signin" data-active={isActive('/signup')}>
             Log in
           </Link>
       </div>
@@ -90,10 +90,12 @@ const MobileMenu = ({ items }: { items: any[]}): JSX.Element => {
   return (
     <Menu >
       <MenuButton
+        
         as={IconButton}
         aria-label='Options'
         icon={<HamburgerIcon />}
-        color='black'
+        variant='outline'
+        colorScheme='cyan'
       />
       <MenuList>
         {items.map((item) => (

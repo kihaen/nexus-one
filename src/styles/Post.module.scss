@@ -118,7 +118,8 @@
     img{
       max-height: 500px;
       object-fit: cover;
-      margin-bottom: 30px;
+      object-position: center;
+      // margin-bottom: 30px;
     }
 
   }
@@ -233,26 +234,68 @@
     margin-bottom: 16px;
   }
   
-  .imageGallery {
+  .galleryWrapper {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 8px;
     border-radius: 12px;
     overflow: hidden;
     margin-bottom: 24px;
-    
+    height: 500px;
+    .galleryImage{
+      grid-column: span 2;
+      grid-row: span 2;
+      column-gap: 10px;
+      row-gap: 10px;
+      img{
+        height: 245px;
+        gap: 10px;
+      }
+    }
     @media (min-width: 768px) {
       grid-template-columns: repeat(4, 1fr);
-      height: 400px;
+      // height: 500px;
+      .galleryImage{
+        grid-template-columns: repeat(2, 1fr);
+        grid-column: span 2;
+        grid-row: span 1;
+      }
+    }
+  }
+
+  .mainImage{
+    grid-column: span 2;
+    grid-row: span 2;
+    height: 500px;
+    img{
+      height: 500px;
+      width: 100%;
+    }
+  }
+
+  .mainImageSolo{
+    grid-column: span 4;
+    grid-row: span 2;
+    height: 500px;
+    img{
+      height: 500px;
+      width: 100%;
     }
   }
   
-  .mainImage {
-    grid-column: span 2;
-    grid-row: span 2;
+  
+  .galleryImage {
+    display: grid;
+    grid-column: span 1;
+    grid-row: span 1;
     height: 100%;
     position: relative;
+    img{
+      height: 250px;
+      width: 100%;
+    }
   }
+
   
   .hostInfo {
     display: flex;
@@ -378,6 +421,8 @@
     width: var(--max-width);
     max-width: 100%;
     margin-bottom: 20px;
+    column-gap: 5px;
+    row-gap: 5px;
     img{
       height: 160px;
       width: 100%;

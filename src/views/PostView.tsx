@@ -1,12 +1,12 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import Image from "next/image";
-import { isValidURL } from "@/utility/util";
 import MapComponent from '@/components/MapComponent/MapComponent';
 import placeholder from "../assets/placeholderImage.png";
 import { PostState } from "../pages/p/[id]"
 import { FaStar, FaMapMarkerAlt } from 'react-icons/fa';
 import Style from "../styles/Post.module.scss";
+import { PostAction } from "../pages/p/[id]";
 
 interface PostViewProps {
   state: PostState;
@@ -16,6 +16,7 @@ interface PostViewProps {
   onEditClick: () => void;
   onPublishClick: (id: string) => void;
   onMessageClick: () => void;
+  dispatch: React.Dispatch<PostAction>;
 }
 
 const PostView: React.FC<PostViewProps> = ({
@@ -25,8 +26,12 @@ const PostView: React.FC<PostViewProps> = ({
   userHasValidSession,
   onEditClick,
   onPublishClick,
-  onMessageClick
+  onMessageClick,
+  dispatch
 }) => {
+
+  const galleryList = state.files.slice(1)
+
   return (
     <div className={Style.postOverviewPublic}>
       <div className={Style.postOverviewHeaderWrapper}>
@@ -43,14 +48,32 @@ const PostView: React.FC<PostViewProps> = ({
         )}
       </div>
 
-      <div className={Style.imageGallery}>
-        <div className={Style.mainImage}>
-          <Image 
-            src={isValidURL(state.coverImg) ? state.coverImg : placeholder} 
-            alt={state.title} 
-            width={1000} 
-            height={500}
-          />
+      <div className={Style.galleryWrapper}>
+        <div className={galleryList.length > 0 ? Style.mainImage : Style.mainImageSolo}>
+            <Image 
+                src={state.files[0] || state.coverImg || placeholder} 
+                alt={state.title} 
+                width={1000} 
+                height={500}
+                />
+        </div>
+
+        <div className={Style.galleryImage}>
+            { galleryList.map((file, key)=>{
+                return (
+                
+                    <Image 
+                        src={file || state.coverImg || placeholder} 
+                        alt={state.title} 
+                        width={1000} 
+                        height={500}
+                        key={key}
+                        onClick={()=>{
+                            dispatch({ type: 'CHANGE_IMAGE', payload: key+1 })
+                        }}
+                    />
+                )
+            })}
         </div>
       </div>
 

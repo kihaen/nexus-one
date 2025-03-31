@@ -14,6 +14,7 @@ import { NominatimReverseResponse } from "@/utility/util";
 export type PostState = {
   title: string;
   coverImg: string;
+  coverIdx : number;
   files : string[];
   description: string;
   location: string;
@@ -39,11 +40,14 @@ export type PostAction =
   | { type: 'SET_MESSAGE_BODY'; payload: string }
   | { type: 'TOGGLE_MESSAGE' }
   | { type: 'SET_MESSAGE_SENT'; payload: boolean }
-  | { type: 'RESET_STATE'; payload: Partial<PostState> };
+  | { type: 'RESET_STATE'; payload: Partial<PostState> }
+  | { type: 'CHANGE_IMAGE'; payload: number };
+  
 
 const initialState: PostState = {
   title: '',
   coverImg: '',
+  coverIdx : 0,
   files : [],
   description: '',
   location: '',
@@ -82,6 +86,8 @@ function reducer(state: PostState, action: PostAction): PostState {
       return { ...state, showMessage: !state.showMessage };
     case 'SET_MESSAGE_SENT':
       return { ...state, messageSent: action.payload };
+    case 'CHANGE_IMAGE':
+      return { ...state, files: [state.files[action.payload], ...state.files.slice(0, action.payload), ...state.files.slice(action.payload + 1)] };
     case 'RESET_STATE':
       return { ...state, ...action.payload };
     default:
@@ -224,6 +230,7 @@ const Post = (props : any) => {
           onEditClick={() => dispatch({ type: 'TOGGLE_EDIT' })}
           onPublishClick={publishPost}
           onMessageClick={() => dispatch({ type: 'TOGGLE_MESSAGE' })}
+          dispatch={dispatch}
         />
       ) : (
         <PostEdit

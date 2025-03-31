@@ -16,6 +16,8 @@ export type PostProps = {
     name: string;
     email: string;
   } | null;
+  files : string[];
+  coverIdx : number;
   content: string;
   published: boolean;
   coverImg : string;
@@ -32,7 +34,7 @@ const Post = ({ post } : Post): JSX.Element => {
   return (
     <Card className={Style.postWrapper} onClick={() => Router.push("/p/[id]", `/p/${post.id}`)}>
       <>
-      <Image width={400} height={250} className={Style.postImage} src={isValidURL(post?.coverImg)? post?.coverImg : placeholder} alt=''/>
+      <Image width={400} height={250} className={Style.postImage} src={ post?.files[post.coverIdx]|| post?.coverImg || placeholder} alt=''/>
       <div className={Style.postContent}>
         <h2>{post.title}</h2>
         <small>By {authorName}</small>
