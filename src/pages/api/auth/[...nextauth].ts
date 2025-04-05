@@ -29,6 +29,7 @@ declare module "next-auth/jwt" {
     id: string;
     accessToken?: string;
   }
+}
 
 export const authOptions: NextAuthOptions = {
   providers: [
