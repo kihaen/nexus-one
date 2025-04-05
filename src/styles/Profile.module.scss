@@ -1,0 +1,212 @@
+.profileContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.profileHeader {
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.userInfo {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.profileImage {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profileImagePlaceholder {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: #64748b;
+}
+
+.userDetails {
+  flex: 1;
+
+  h1 {
+    margin: 0 0 1rem 0;
+    font-size: 1.8rem;
+    color: #1a202c;
+  }
+}
+
+.about {
+  color: #4a5568;
+  margin-bottom: 1rem;
+
+  p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
+  button {
+    padding: 0.5rem 1rem;
+    background: #e2e8f0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    
+    &:hover {
+      background: #cbd5e0;
+    }
+  }
+}
+
+.aboutEdit {
+  textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    font-family: inherit;
+    resize: vertical;
+
+    &:focus {
+      outline: none;
+      border-color: #4299e1;
+      box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+    }
+  }
+}
+
+.editButtons {
+  display: flex;
+  gap: 1rem;
+
+  button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+
+    &:first-child {
+      background: #4299e1;
+      color: white;
+
+      &:hover {
+        background: #3182ce;
+      }
+    }
+
+    &:last-child {
+      background: #e2e8f0;
+
+      &:hover {
+        background: #cbd5e0;
+      }
+    }
+  }
+}
+
+.contentSection {
+  h2 {
+    margin: 2rem 0 1rem;
+    color: #2d3748;
+  }
+}
+
+.postsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.postCard {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  .postImage {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .postInfo {
+    padding: 1rem;
+
+    h3 {
+      margin: 0 0 0.5rem;
+      color: #2d3748;
+    }
+
+    p {
+      color: #4a5568;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+.reviewsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.reviewCard {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  h3 {
+    margin: 0 0 0.5rem;
+    color: #2d3748;
+    font-size: 1.1rem;
+  }
+
+  p {
+    color: #4a5568;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .rating {
+    color: #2d3748;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    .stars {
+      display: flex;
+      gap: 2px;
+    }
+
+    .star {
+      color: #FACC15; // Yellow color for filled stars
+      font-size: 1.1rem;
+
+      &.empty {
+        color: #E2E8F0; // Light gray for empty stars
+      }
+    }
+  }
+}

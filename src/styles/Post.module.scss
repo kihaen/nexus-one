@@ -606,3 +606,42 @@
     margin-top: 24px;
   }
 
+  .select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 4px;
+    font-size: 16px;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: capitalize;
+    margin-left: 8px;
+
+    &.rental {
+      background-color: #e3f2fd;
+      color: #1976d2;
+    }
+
+    &.job {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    &.selling {
+      background-color: #fff3e0;
+      color: #f57c00;
+    }
+
+    &.meetup {
+      background-color: #f3e5f5;
+      color: #7b1fa2;
+    }
+  }
+

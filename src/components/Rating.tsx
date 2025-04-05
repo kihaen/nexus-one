@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { Button } from "./ui/button";
+import { Textarea } from "./ui/textarea";
 
 interface RatingProps {
   postId: string;
@@ -13,12 +14,14 @@ interface RatingData {
 
 export const RatingComponent: FC<RatingProps> = ({ postId, initialRating }) => {
   const [rating, setRating] = useState<number>(0);
+  const [reviewText, setReviewText] = useState<string>("");
   const [hoveredRating, setHoveredRating] = useState<number>(0);
   const [ratingData, setRatingData] = useState<RatingData>({
     averageRating: 0,
     totalRatings: 0,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showReviewInput, setShowReviewInput] = useState(false);
 
   useEffect(() => {
     fetchRatings();
@@ -37,17 +40,27 @@ export const RatingComponent: FC<RatingProps> = ({ postId, initialRating }) => {
   };
 
   const handleRatingSubmit = async (selectedRating: number) => {
+    setRating(selectedRating);
+    setShowReviewInput(true);
+  };
+
+  const handleReviewSubmit = async () => {
     setIsSubmitting(true);
     try {
       const response = await fetch("/api/post/rating", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ postId, rating: selectedRating }),
+        body: JSON.stringify({
+          postId,
+          rating,
+          text: reviewText.trim() || null,
+        }),
       });
 
       if (response.ok) {
-        setRating(selectedRating);
         await fetchRatings();
+        setShowReviewInput(false);
+        setReviewText("");
       }
     } catch (error) {
       console.error("Error submitting rating:", error);
@@ -78,6 +91,38 @@ export const RatingComponent: FC<RatingProps> = ({ postId, initialRating }) => {
           </Button>
         ))}
       </div>
+
+      {showReviewInput && (
+        <div className="w-full max-w-md mt-2">
+          <Textarea
+            placeholder="Write your review (optional)"
+            value={reviewText}
+            onChange={(e) => setReviewText(e.target.value)}
+            className="mb-2"
+          />
+          <div className="flex justify-end gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setShowReviewInput(false);
+                setRating(0);
+                setReviewText("");
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              size="sm"
+              onClick={handleReviewSubmit}
+              disabled={isSubmitting}
+            >
+              Submit
+            </Button>
+          </div>
+        </div>
+      )}
+
       <div className="text-sm text-gray-500">
         {ratingData.totalRatings > 0 ? (
           <>

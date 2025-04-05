@@ -9,6 +9,7 @@ datasource db {
   provider = "postgresql"
   url      = env("POSTGRES_PRISMA_URL")
 }
+
 model Post {
   id          String  @id @default(cuid())
   title       String
@@ -22,6 +23,7 @@ model Post {
   files       String[] @default([])
   location    String  @default("")
   ratings     Rating[]
+  tag         String?
 }
 
 model Message {
@@ -68,16 +70,17 @@ model Session {
 model User {
   id                 String    @id @default(cuid())
   name               String?
-  email              String?@unique
+  email              String?   @unique
   emailVerified      DateTime?
   password           String?   @db.Char(60)
   image              String?
+  about              String?   @db.Text
   posts              Post[]
   ratings            Rating[]
   accounts           Account[]
   sessions           Session[]
-  messageAuthor     Message[] @relation("messageAuthor")
-  messageReceipient Message[] @relation("messageReceipient")
+  messageAuthor      Message[] @relation("messageAuthor")
+  messageReceipient  Message[] @relation("messageReceipient")
 }
 
 model VerificationToken {
@@ -92,6 +95,7 @@ model VerificationToken {
 model Rating {
   id        String   @id @default(cuid())
   value     Int      @db.SmallInt
+  text      String?  @db.Text
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)

@@ -70,6 +70,31 @@ const PostEdit: React.FC<PostEditProps> = ({
         </div>
 
         <div className={Style.formGroup}>
+          <label>Category</label>
+          <select
+            value={state.tag || ""}
+            onChange={(e) =>
+              dispatch({
+                type: "SET_TAG",
+                payload: e.target.value as
+                  | "rental"
+                  | "job"
+                  | "selling"
+                  | "meetup"
+                  | null,
+              })
+            }
+            className={Style.select}
+          >
+            <option value="">Select a category</option>
+            <option value="rental">Rental</option>
+            <option value="job">Job</option>
+            <option value="selling">Selling</option>
+            <option value="meetup">Meetup</option>
+          </select>
+        </div>
+
+        <div className={Style.formGroup}>
           <div className={Style.selectedImages}>
             {props.files.length > 0 &&
               props.files.map((link: string, index: number) => (

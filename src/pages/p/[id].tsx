@@ -20,6 +20,7 @@ export type PostState = {
   content: string;
   showEdit: boolean;
   isLoading: boolean;
+  tag: "rental" | "job" | "selling" | "meetup" | null;
 };
 
 export type PostAction =
@@ -30,6 +31,7 @@ export type PostAction =
   | { type: "SET_LOCATION"; payload: string }
   | { type: "SET_COORDINATES"; payload: number[] }
   | { type: "SET_CONTENT"; payload: string }
+  | { type: "SET_TAG"; payload: "rental" | "job" | "selling" | "meetup" | null }
   | { type: "TOGGLE_EDIT" }
   | { type: "RESET_STATE"; payload: Partial<PostState> }
   | { type: "CHANGE_IMAGE"; payload: number }
@@ -45,6 +47,7 @@ const initialState: PostState = {
   content: "",
   showEdit: false,
   isLoading: false,
+  tag: null,
 };
 
 function reducer(state: PostState, action: PostAction): PostState {
@@ -63,6 +66,8 @@ function reducer(state: PostState, action: PostAction): PostState {
       return { ...state, coordinates: action.payload };
     case "SET_CONTENT":
       return { ...state, content: action.payload };
+    case "SET_TAG":
+      return { ...state, tag: action.payload };
     case "TOGGLE_EDIT":
       return { ...state, showEdit: !state.showEdit };
     case "SET_LOADING":
@@ -129,6 +134,7 @@ const Post = (props: any) => {
         description: state.description,
         location: state.location,
         coordinate: state.coordinates,
+        tag: state.tag,
       };
       dispatch({
         type: "SET_LOADING",
@@ -183,6 +189,7 @@ const Post = (props: any) => {
         description: state.description,
         location: state.location,
         coordinate: state.coordinates,
+        tag: state.tag,
       };
       dispatch({
         type: "SET_LOADING",

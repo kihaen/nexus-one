@@ -78,6 +78,11 @@ const PostView: React.FC<PostViewProps> = ({
       )}
       <div className={Style.postOverviewHeaderWrapper}>
         <h1>{state.title}</h1>
+        {state.tag && (
+          <span className={`${Style.tag} ${Style[state.tag]}`}>
+            {state.tag.charAt(0).toUpperCase() + state.tag.slice(1)}
+          </span>
+        )}
       </div>
 
       <div className={Style.galleryWrapper}>

@@ -124,8 +124,8 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
     async session({ session, token, user }) {
-      if (session.user) {
-        session.user.id = token.sub || user.id;
+      if (session?.user) {
+        session.user.id = token.sub || user?.id || token.id; // Try all possible ID sources
         session.user.role = (token.role as string) || "user"; // Default role
         session.accessToken = token.accessToken;
       }

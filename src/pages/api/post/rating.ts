@@ -54,7 +54,7 @@ export default async function handler(
 
     // Handle POST request - Submit rating
     if (req.method === "POST") {
-      const { rating } = req.body;
+      const { rating, text } = req.body;
 
       if (typeof rating !== "number" || rating < 1 || rating > 5) {
         return res
@@ -67,7 +67,7 @@ export default async function handler(
         where: {
           postId_userId: {
             userId: user.id,
-            postId: postId,
+            postId,
           },
         },
       });
@@ -81,7 +81,10 @@ export default async function handler(
               postId,
             },
           },
-          data: { value: rating },
+          data: {
+            value: rating,
+            text: text || null,
+          },
         });
         return res.status(200).json(updatedRating);
       }
@@ -90,6 +93,7 @@ export default async function handler(
       const newRating = await prisma.rating.create({
         data: {
           value: rating,
+          text: text || null,
           user: { connect: { id: user.id } },
           post: { connect: { id: postId } },
         },
