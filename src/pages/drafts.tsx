@@ -1,13 +1,11 @@
-
-import React,{useState, useEffect} from 'react';
-import { GetServerSideProps } from 'next';
-import { useSession, getSession } from 'next-auth/react';
-import Layout from '../components/Layout';
-import  MapComponent  from '@/components/MapComponent/MapComponent'
-import Post, { PostProps } from '../components/Post';
-import prisma from '../../lib/prisma';
-import Style from '../styles/Post.module.scss';
-import { Input } from '@chakra-ui/react';
+import React, { useState, useEffect } from "react";
+import { GetServerSideProps } from "next";
+import { useSession, getSession } from "next-auth/react";
+import Layout from "../components/Layout";
+import Post, { PostProps } from "../components/Post";
+import prisma from "../../lib/prisma";
+import Style from "../styles/Post.module.scss";
+import { Input } from "@/components/ui/input";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
@@ -36,25 +34,25 @@ type Props = {
   drafts: PostProps[];
 };
 
-const Drafts = (props : Props): JSX.Element => {
+const Drafts = (props: Props): React.JSX.Element => {
   const { data: session } = useSession();
   // const {Search} = Input;
-  const feed = props.drafts // double check
+  const feed = props.drafts; // double check
 
-  const [searchInput, changeInput] = useState<string>('');
-  const [drafts, changeDrafts] = useState<PostProps[]>([]); 
+  const [searchInput, changeInput] = useState<string>("");
+  const [drafts, changeDrafts] = useState<PostProps[]>([]);
 
-  useEffect(()=>{
-    changeDrafts(feed)
-  },[feed])
+  useEffect(() => {
+    changeDrafts(feed);
+  }, [feed]);
 
-  const onChangeSearch = (input : string)=>{
+  const onChangeSearch = (input: string) => {
     changeInput(input);
-    const sorted = feed.filter((iter)=>{
-      return iter.title.includes(input)
-    })
-    changeDrafts(sorted)
-  }
+    const sorted = feed.filter((iter) => {
+      return iter.title.includes(input);
+    });
+    changeDrafts(sorted);
+  };
 
   if (!session) {
     return (
@@ -67,15 +65,26 @@ const Drafts = (props : Props): JSX.Element => {
 
   return (
     <Layout>
-      <Input className={Style.inputWrapper} placeholder='Search' onChange={(e)=>{onChangeSearch(e.target.value)}} value={searchInput}/>
+      <Input
+        className={Style.inputWrapper}
+        placeholder="Search"
+        onChange={(e) => {
+          onChangeSearch(e.target.value);
+        }}
+        value={searchInput}
+      />
       <div className={Style.drafts}>
         <h1>My Drafts</h1>
         <main>
-        {drafts.length > 0 ? drafts.map((post) => (
-        <div key={post.id} className={Style.post}>
-          <Post post={post} />
-        </div>
-        )) : <p>... No Drafts available</p>}
+          {drafts.length > 0 ? (
+            drafts.map((post) => (
+              <div key={post.id} className={Style.post}>
+                <Post post={post} />
+              </div>
+            ))
+          ) : (
+            <p>No Drafts, why not create a new post?</p>
+          )}
         </main>
       </div>
     </Layout>

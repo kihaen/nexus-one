@@ -4,13 +4,12 @@ import { useRouter } from 'next/router';
 import Router from "next/router";
 import { signOut, useSession } from 'next-auth/react';
 import {
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-} from '@chakra-ui/react';
-import { HamburgerIcon, AddIcon, EmailIcon, EditIcon, ViewIcon } from '@chakra-ui/icons';
-import { IconButton } from '@chakra-ui/react';
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarTrigger,
+} from "@/components/ui/menubar"
 import Image from 'next/image';
 import Style from '../styles/Header.module.scss';
 import headerIcon from '../assets/homeIcon.svg';
@@ -26,11 +25,11 @@ const Header = (): JSX.Element => {
   ];
 
   const mobileMenuItems = [
-    { href: '/create', label: 'New Post', icon: <AddIcon /> },
-    { href: '/drafts', label: 'Drafts', icon: <EditIcon /> },
-    { href: '/inbox', label: 'Inbox', icon: <EmailIcon /> },
-    { href: '/published', label: 'Published', icon: <ViewIcon /> },
-    { href: '/api/auth/signout', label: 'Logout', icon: <EditIcon />, onClick: () => signOut() },
+    { href: '/create', label: 'New Post' },
+    { href: '/drafts', label: 'Drafts'},
+    { href: '/inbox', label: 'Inbox' },
+    { href: '/published', label: 'Published' },
+    { label: 'Logout', onClick: () => { signOut()} },
   ];
 
   const left = (
@@ -88,25 +87,20 @@ const Header = (): JSX.Element => {
 
 const MobileMenu = ({ items }: { items: any[]}): JSX.Element => {
   return (
-    <Menu >
-      <MenuButton
-        
-        as={IconButton}
-        aria-label='Options'
-        icon={<HamburgerIcon />}
-        variant='outline'
-        colorScheme='cyan'
-      />
-      <MenuList>
-        {items.map((item) => (
-          <MenuItem key={item.href} color={"black"} icon={item.icon} onClick={()=>{
+    <Menubar className='bg-black border-transparent'>
+      <MenubarMenu >
+        <MenubarTrigger className='bg-transparent'>{"Menu"}</MenubarTrigger>
+        <MenubarContent>
+        {items.map((item, index) => (
+          <MenubarItem key={item?.href ||`#${index}`} onClick={item.onClick ? item.onClick : ()=>{
             Router.push(item.href)
           }}>
               {item.label}
-          </MenuItem>
+          </MenubarItem>
         ))}
-      </MenuList>
-    </Menu>
+      </MenubarContent>
+      </MenubarMenu>
+    </Menubar>
   );
 };
 

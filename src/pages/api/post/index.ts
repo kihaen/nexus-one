@@ -1,8 +1,8 @@
 // import { getSession } from 'next-auth/react';
-import prisma from '../../../../lib/prisma';
-import {NextApiRequest, NextApiResponse} from 'next'
-import { getServerSession } from "next-auth/next"
-import { options } from '../auth/[...nextauth]';
+import prisma from "../../../../lib/prisma";
+import { NextApiRequest, NextApiResponse } from "next";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../auth/[...nextauth]";
 
 // POST /api/post
 // Required fields in body: title
@@ -11,17 +11,16 @@ import { options } from '../auth/[...nextauth]';
 export const config = {
   api: {
     bodyParser: {
-      sizeLimit: '10mb' // Increased from default 1MB to 10MB
-    }
-  }
+      sizeLimit: "10mb", // Increased from default 1MB to 10MB
+    },
+  },
 };
 
 export default async function handle(
-    req: NextApiRequest,
-    res: NextApiResponse
+  req: NextApiRequest,
+  res: NextApiResponse
 ) {
-  const session = await getServerSession(req, res, options);
-  console.log("ASdasdsa")
+  const session = await getServerSession(req, res, authOptions);
   const result = await prisma.post.create({
     data: {
       ...req.body,
