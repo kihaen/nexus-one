@@ -9,31 +9,59 @@ import { PostProps } from "@/components/Post";
 import { Input } from "@/components/ui/input";
 import Style from "../styles/Home.module.css";
 import { Card } from "@/components/ui/card";
+import { useRouter } from "next/router";
+import { Pagination } from "@/components/ui/pagination";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  const feed = await prisma.post.findMany({
-    where: { published: true },
-    include: {
-      author: {
-        select: { name: true },
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  res,
+  query,
+}) => {
+  const page = Number(query.page) || 1;
+  const pageSize = 6; // Number of posts per page
+  const skip = (page - 1) * pageSize;
+
+  const [feed, total] = await Promise.all([
+    prisma.post.findMany({
+      where: { published: true },
+      include: {
+        author: {
+          select: { name: true },
+        },
       },
-    },
-  });
+      take: pageSize,
+      skip: skip,
+      orderBy: { id: "desc" },
+    }),
+    prisma.post.count({
+      where: { published: true },
+    }),
+  ]);
+
   return {
-    props: { feed },
+    props: {
+      feed,
+      currentPage: page,
+      totalPages: Math.ceil(total / pageSize),
+      pageSize,
+    },
   };
 };
 
 type Props = {
   feed: PostProps[];
+  currentPage: number;
+  totalPages: number;
+  pageSize: number;
 };
 
 const Home = (props: Props): JSX.Element => {
   const searchText = useRef("");
   const [latestFeed, setLatestFeed] = useState<PostProps[]>([]);
-  const { feed } = props;
+  const { feed, currentPage, totalPages } = props;
+  const router = useRouter();
 
   useEffect(() => {
     setLatestFeed(feed);
@@ -45,6 +73,13 @@ const Home = (props: Props): JSX.Element => {
       return iter.title.includes(input);
     });
     setLatestFeed(sorted);
+  };
+
+  const handlePageChange = (page: number) => {
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, page },
+    });
   };
 
   const mapCoordinates = useMemo(() => {
@@ -80,6 +115,12 @@ const Home = (props: Props): JSX.Element => {
                       ))
                     : "...no content available"}
                 </main>
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={handlePageChange}
+                  className="my-8"
+                />
               </div>
             </div>
             <div className={Style.right}>
