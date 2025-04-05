@@ -1,13 +1,13 @@
 // services/postCache.ts
-import redisClient from '@/lib/redis';
-import { Post } from '@prisma/client';
+import redisClient from "@/lib/redis";
+import { Post } from "@prisma/client";
 
-const DEFAULT_EXPIRATION = 3600; // 1 hour in seconds
+const DEFAULT_EXPIRATION = 604800; // 1 hour in seconds
 
 export const getPost = async (id: string): Promise<Post | null> => {
   const cacheKey = `post:${id}`;
   const cachedPost = await redisClient.get(cacheKey);
-  
+
   if (cachedPost) {
     return JSON.parse(cachedPost) as Post;
   }
@@ -16,7 +16,10 @@ export const getPost = async (id: string): Promise<Post | null> => {
 
 // By Post
 
-export const setPost = async (post: Post, ttl: number = DEFAULT_EXPIRATION): Promise<void> => {
+export const setPost = async (
+  post: Post,
+  ttl: number = DEFAULT_EXPIRATION
+): Promise<void> => {
   const cacheKey = `post:${post.id}`;
   await redisClient.setEx(cacheKey, ttl, JSON.stringify(post));
 };
@@ -31,19 +34,25 @@ export const deletePost = async (id: string): Promise<void> => {
 export const getPostsByAuthor = async (authorId: string): Promise<Post[]> => {
   const cacheKey = `posts:author:${authorId}`;
   const cachedPosts = await redisClient.get(cacheKey);
-  
+
   if (cachedPosts) {
     return JSON.parse(cachedPosts) as Post[];
   }
   return [];
 };
 
-export const setPostsByAuthor = async (authorId: string, posts: Post[], ttl: number = DEFAULT_EXPIRATION): Promise<void> => {
+export const setPostsByAuthor = async (
+  authorId: string,
+  posts: Post[],
+  ttl: number = DEFAULT_EXPIRATION
+): Promise<void> => {
   const cacheKey = `posts:author:${authorId}`;
   await redisClient.setEx(cacheKey, ttl, JSON.stringify(posts));
 };
 
-export const invalidateAuthorPosts = async (authorId: string): Promise<void> => {
-  const cacheKey = `posts:author:${authorId}`;
+export const invalidateAuthorPosts = async (
+  authorId: string
+): Promise<void> => {
+  const cacheKey = `posts:authors:${authorId}`;
   await redisClient.del(cacheKey);
 };

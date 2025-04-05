@@ -1,78 +1,103 @@
-import React, { forwardRef } from 'react';
-import { Card, Image, Stack, CardBody, Heading, Text, CardFooter, IconButton } from '@chakra-ui/react';
-import { CloseIcon } from '@chakra-ui/icons';
-import Router from 'next/router';
+import React, { forwardRef } from "react";
+import { X } from "lucide-react";
+import { useRouter } from "next/router";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 interface PopoverCardProps {
-    title?: string;
-    description?: string;
-    coverImg?: string;
-    footer?: JSX.Element;
-    postId?: string;
-    onClose: () => void;
-    display? : string;
+  title?: string;
+  description?: string;
+  footer?: JSX.Element;
+  postId?: string;
+  onClose: () => void;
+  display?: string;
+  coverImage: string;
 }
 
-const PopoverCard = forwardRef<HTMLDivElement, PopoverCardProps>(({ title, description, coverImg, footer, postId, onClose, display = 'flex' }: PopoverCardProps, ref) => {
+const PopoverCard = forwardRef<HTMLDivElement, PopoverCardProps>(
+  (
+    {
+      title,
+      description,
+      footer,
+      postId,
+      coverImage,
+      onClose,
+      display = "flex",
+    }: PopoverCardProps,
+    ref
+  ) => {
+    const router = useRouter();
+
+    const handleClick = (e: React.MouseEvent) => {
+      e.preventDefault();
+      if (postId) {
+        router.push(`/p/${postId}`);
+      }
+    };
 
     return (
-        <Card
-            direction={{ base: 'row' }}
-            minWidth={'300px'}
-            maxWidth={'500px'}
-            height={'150px'}
-            overflow="hidden"
-            marginTop={'15px'}
-            className="popoverCard"
-            variant="outline"
-            ref={ref}
-            display={display}
+      <Card
+        ref={ref}
+        className={`
+          min-w-[300px] max-w-[500px] h-[150px] mt-4 overflow-hidden
+          flex ${display === "none" ? "hidden" : "flex"} border
+        `}
+      >
+        <div
+          className="relative w-[100px] h-full min-w-[100px] cursor-pointer"
+          onClick={handleClick}
         >
-            <Image
-                objectFit="cover"
-                maxW={{ base: '100px' }}
-                src={coverImg}
-                cursor="pointer"
-                onClick={(e) => {
-                    e.preventDefault();
-                    Router.push(`/p/${postId}`);
-                }}
-                alt="Cover image"
+          {coverImage && (
+            <img
+              src={coverImage}
+              alt="Cover image"
+              className="object-cover w-full h-full"
             />
-            <Stack>
-                <CardBody paddingBottom="0px" minWidth="50px">
-                    <IconButton
-                        icon={<CloseIcon height="8px" width="8px" />}
-                        aria-label="close"
-                        onClick={onClose}
-                        position="absolute"
-                        top="5px"
-                        right="5px"
-                        width="15px"
-                        height="15px"
-                        minWidth="25px"
-                    />
-                    <Heading
-                        onClick={(e) => {
-                            e.preventDefault();
-                            Router.push(`/p/${postId}`);
-                        }}
-                        cursor="pointer"
-                        size="sm"
-                    >
-                        {title || ''}
-                    </Heading>
-                    <Text py="3" fontSize="12">
-                        {description || ''}
-                    </Text>
-                </CardBody>
-                <CardFooter fontSize="12" paddingTop="0px">
-                    {footer}
-                </CardFooter>
-            </Stack>
-        </Card>
+          )}
+        </div>
+
+        <div className="flex flex-col flex-1 relative">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="absolute top-1 right-1 w-6 h-6 p-1 rounded-full"
+            onClick={onClose}
+          >
+            <X className="w-3 h-3" />
+          </Button>
+
+          <CardHeader className="p-3 pb-0 space-y-0">
+            <CardTitle
+              className="text-sm font-medium cursor-pointer"
+              onClick={handleClick}
+            >
+              {title || ""}
+            </CardTitle>
+          </CardHeader>
+
+          <CardContent className="p-3 pt-1">
+            <CardDescription className="text-xs">
+              {description || ""}
+            </CardDescription>
+          </CardContent>
+
+          {footer && (
+            <CardFooter className="p-3 pt-0 text-xs">{footer}</CardFooter>
+          )}
+        </div>
+      </Card>
     );
-});
-PopoverCard.displayName = "PopoverCard"
+  }
+);
+
+PopoverCard.displayName = "PopoverCard";
 
 export default PopoverCard;

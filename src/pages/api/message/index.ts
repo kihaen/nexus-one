@@ -2,7 +2,7 @@
 import prisma from '../../../../lib/prisma';
 import {NextApiRequest, NextApiResponse} from 'next'
 import { getServerSession } from "next-auth/next"
-import { options } from '../auth/[...nextauth]';
+import { authOptions } from '../auth/[...nextauth]';
 
 // POST /api/message
 
@@ -14,14 +14,13 @@ export interface Message{
     messageAuthor : string,
     messageReceipient : string,
 }
-
+// should we handle if user doesn't have sessions
 export default async function handle(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-  const session = await getServerSession(req, res, options);
+  const session = await getServerSession(req, res, authOptions);
   const currentDate = new Date();
-  console.log(req.body, req.body.messageReceipient, session?.user?.email)
   const result = await prisma.message.create({
     data: {
       ...req.body,
@@ -30,6 +29,5 @@ export default async function handle(
       date : currentDate.toISOString()
     },
   });
-  console.log(result) // DEBUG
   res.json(result);
 }

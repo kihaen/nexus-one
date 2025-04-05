@@ -19,9 +19,9 @@ model Post {
   author      User?@relation(fields:[authorId], references:[id])
   authorId    String
   coverImg    String?
-  coverIdx    Int? @default(0)
   files       String[] @default([])
   location    String  @default("")
+  ratings     Rating[]
 }
 
 model Message {
@@ -70,8 +70,10 @@ model User {
   name               String?
   email              String?@unique
   emailVerified      DateTime?
+  password           String?   @db.Char(60)
   image              String?
   posts              Post[]
+  ratings            Rating[]
   accounts           Account[]
   sessions           Session[]
   messageAuthor     Message[] @relation("messageAuthor")
@@ -85,4 +87,16 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Rating {
+  id        String   @id @default(cuid())
+  value     Int      @db.SmallInt
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  createdAt DateTime @default(now())
+
+  @@unique([postId, userId])
 }
