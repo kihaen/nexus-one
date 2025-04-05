@@ -89,7 +89,9 @@ export default function Profile({
                     />
                     <div className={Style.editButtons}>
                       <button onClick={handleUpdateAbout}>Save</button>
-                      <button onClick={() => setIsEditing(false)}>Cancel</button>
+                      <button onClick={() => setIsEditing(false)}>
+                        Cancel
+                      </button>
                     </div>
                   </div>
                 ) : (
@@ -176,7 +178,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   if (!userId) {
     return {
       redirect: {
-        destination: '/',
+        destination: "/",
         permanent: false,
       },
     };
@@ -197,7 +199,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     if (!user) {
       return {
         redirect: {
-          destination: '/',
+          destination: "/",
           permanent: false,
         },
       };
@@ -239,10 +241,10 @@ export const getServerSideProps: GetServerSideProps = async ({
       },
     };
   } catch (error) {
-    console.error('Error fetching profile:', error);
+    console.error("Error fetching profile:", error);
     return {
       redirect: {
-        destination: '/',
+        destination: "/",
         permanent: false,
       },
     };

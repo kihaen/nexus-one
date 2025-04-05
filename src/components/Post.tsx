@@ -19,7 +19,7 @@ export type PostProps = {
   coverImg: string;
   description: string;
   coordinate: number[];
-  tag: 'rental' | 'job' | 'selling' | 'meetup' | null;
+  tag: "rental" | "job" | "selling" | "meetup" | null;
 };
 
 type Post = {

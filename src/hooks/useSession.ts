@@ -1,7 +1,7 @@
-import { useSession as useNextAuthSession } from 'next-auth/react';
-import { Session } from 'next-auth';
+import { useSession as useNextAuthSession } from "next-auth/react";
+import { Session } from "next-auth";
 
-interface ExtendedSession extends Omit<Session, 'user'> {
+interface ExtendedSession extends Omit<Session, "user"> {
   accessToken?: string;
   user: {
     id: string;
